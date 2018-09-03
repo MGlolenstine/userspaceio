@@ -12,7 +12,7 @@ libgpiodarchive="libgpiod-1.0.1.tar.gz"
 libgpiodgiturl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
 
 # Default kernel version to use this if linux header source package not found
-defkerver="4.15.0-15"
+defkerver="4.14.52"
 
 # Get current directory
 curdir=$PWD
