@@ -44,7 +44,7 @@ elif [ "$arch" = "x86_64" ]; then
 fi
 
 # JNA jar (4.5.1 causes UnsatisfiedLinkError)
-jnajar="central.maven.org/maven2/net/java/dev/jna/jna/4.5.0/jna-4.5.0.jar"
+jnajar="repo1.maven.org/maven2/net/java/dev/jna/jna/4.5.2/jna-4.5.2.jar"
 
 log "Installing Java"
 

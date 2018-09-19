@@ -42,6 +42,14 @@ This is not an issue since the Java bytecode compiled on ARMv7 works without
 the need to recompile. The wrapper script skips the JNAerator steps and just
 compiles the demos with the precompiled jars included in the project.
 
+If you get the following error:
+```There is an incompatible JNA native library installed on this system
+Expected: 1.2.3
+Found:    4.5.6```
+
+See [issue](https://github.com/sbt/io/issues/110) on Github. Basically you can add
+`-Djna.nosys=true` or upgrade JNA jar.
+
 ## Download project
 * `cd ~/`
 * `git clone --depth 1 https://github.com/sgjava/userspaceio.git`
