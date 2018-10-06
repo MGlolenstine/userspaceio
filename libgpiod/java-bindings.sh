@@ -51,7 +51,7 @@ else
 		# Compile library
 		log "Compile library"
 		cd ../ >> $logfile 2>&1
-		javac -cp ../../jnaerator/jna-4.5.0.jar:../../jnaerator/jnaerator-runtime.jar gpiod/*.java >> $logfile 2>&1
+		javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar gpiod/*.java >> $logfile 2>&1
 		# Create package
 		/usr/lib/jvm/jdk1.8.0/bin/jar cf libgpiod.jar gpiod/*.* >> $logfile 2>&1
 	fi
@@ -59,7 +59,7 @@ fi
 
 # Compile demo code
 log "Compiling demo code"
-javac -cp ../../jnaerator/jna-4.5.0.jar:../../jnaerator/jnaerator-runtime.jar:libgpiod.jar src/com/codeferm/demo/*.java >> $logfile 2>&1
+javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libgpiod.jar src/com/codeferm/demo/*.java >> $logfile 2>&1
 
 # Create package
 rm -f demo.jar >> $logfile 2>&1
