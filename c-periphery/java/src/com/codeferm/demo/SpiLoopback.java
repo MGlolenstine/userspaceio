@@ -21,7 +21,7 @@ public class SpiLoopback {
 		int maxSpeed = 500000;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// SPI device name (default '/dev/i2c-0')
+			// SPI device name (default '/dev/spidev1.0')
 			device = args[0];
 			// SPI maximum speed (default 500000)
 			maxSpeed = Integer.parseInt(args[1]);
