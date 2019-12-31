@@ -45,8 +45,8 @@ public class I2c {
 	 *            Device path.
 	 * @return File handle.
 	 */
-	public i2c_t.i2c_t open(final String device) {
-		final i2c_t.i2c_t handle = new i2c_t.i2c_t();
+	public Peripheryi2cLibrary.i2c_t open(final String device) {
+		final Peripheryi2cLibrary.i2c_t handle = new Peripheryi2cLibrary.i2c_t();
 		if (lib.i2c_open(handle, device) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
 		}
