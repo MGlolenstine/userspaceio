@@ -10,8 +10,7 @@ import peripheryspi.PeripheryspiLibrary;
 /**
  * SPI class to handle repetitive operations.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class Spi {
@@ -31,12 +30,9 @@ public class Spi {
 	/**
 	 * Open SPI device and return handle.
 	 * 
-	 * @param device
-	 *            Device path.
-	 * @param mode
-	 *            SPI mode.
-	 * @param maxSpeed
-	 *            Maximum speed.
+	 * @param device   Device path.
+	 * @param mode     SPI mode.
+	 * @param maxSpeed Maximum speed.
 	 * @return File handle.
 	 */
 	public PointerByReference open(final String device, final int mode, final int maxSpeed) {
@@ -50,24 +46,22 @@ public class Spi {
 	/**
 	 * Close device.
 	 * 
-	 * @param handle
-	 *            SPI file handle.
+	 * @param handle SPI file handle.
 	 */
 	public void close(final PointerByReference handle) {
 		if (lib.spi_close(handle) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
+		} else {
+			lib.spi_free(handle);
 		}
 	}
 
 	/**
 	 * Transfer byte array.
 	 * 
-	 * @param device
-	 *            Device path.
-	 * @param txBuf
-	 *            Transfer buffer.
-	 * @param rxBuf
-	 *            Receive buffer.
+	 * @param device Device path.
+	 * @param txBuf  Transfer buffer.
+	 * @param rxBuf  Receive buffer.
 	 * @return Receive buffer.
 	 */
 	public ByteBuffer transfer(final PointerByReference handle, final byte[] txBuf, final ByteBuffer rxBuf) {

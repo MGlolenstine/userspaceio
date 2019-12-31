@@ -7,8 +7,7 @@ import peripheryserial.PeripheryserialLibrary;
 /**
  * Serial class to handle repetitive operations.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class Serial {
@@ -28,10 +27,8 @@ public class Serial {
 	/**
 	 * Open Serial device and return handle.
 	 * 
-	 * @param device
-	 *            Device path.
-	 * @param baudRate
-	 *            Buad rate.
+	 * @param device   Device path.
+	 * @param baudRate Buad rate.
 	 * @return File handle.
 	 */
 	public PointerByReference open(final String device, final int baudRate) {
@@ -45,12 +42,13 @@ public class Serial {
 	/**
 	 * Close device.
 	 * 
-	 * @param handle
-	 *            Serial file handle.
+	 * @param handle Serial file handle.
 	 */
 	public void close(final PointerByReference handle) {
 		if (lib.serial_close(handle) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
+		} else {
+			lib.serial_free(handle);
 		}
 	}
 }

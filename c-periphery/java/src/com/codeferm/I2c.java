@@ -11,8 +11,7 @@ import peripheryi2c.i2c_msg;
 /**
  * I2C class to handle repetitive operations.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class I2c {
@@ -41,8 +40,7 @@ public class I2c {
 	/**
 	 * Open I2C device and return handle.
 	 * 
-	 * @param device
-	 *            Device path.
+	 * @param device Device path.
 	 * @return File handle.
 	 */
 	public PointerByReference open(final String device) {
@@ -56,12 +54,13 @@ public class I2c {
 	/**
 	 * Close device.
 	 * 
-	 * @param handle
-	 *            I2C file handle.
+	 * @param handle I2C file handle.
 	 */
 	public void close(final PointerByReference handle) {
 		if (lib.i2c_close(handle) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
+		} else {
+			lib.i2c_free(handle);
 		}
 	}
 
@@ -71,12 +70,9 @@ public class I2c {
 	 * write. Note that for many devices, we can write multiple, sequential
 	 * registers at once by simply making buf array bigger.
 	 * 
-	 * @param addr
-	 *            Address.
-	 * @param flags
-	 *            Flags.
-	 * @param buf
-	 *            Buffer.
+	 * @param addr  Address.
+	 * @param flags Flags.
+	 * @param buf   Buffer.
 	 * @return Populated i2c_msg.
 	 */
 	public i2c_msg message(final short addr, final short flags, final byte[] buf) {
@@ -90,14 +86,10 @@ public class I2c {
 	/**
 	 * Write value to i2c register.
 	 * 
-	 * @param handle
-	 *            I2C file handle.
-	 * @param addr
-	 *            Address.
-	 * @param reg
-	 *            Register.
-	 * @param value
-	 *            Value to write.
+	 * @param handle I2C file handle.
+	 * @param addr   Address.
+	 * @param reg    Register.
+	 * @param value  Value to write.
 	 * @return 0 for no error or error code < 0.
 	 */
 	public int writeReg(final PointerByReference handle, final short addr, final short reg, final short value) {
@@ -106,21 +98,17 @@ public class I2c {
 	}
 
 	/**
-	 * Read array from i2c register. Unlike readReg the bytes values are
-	 * not "& 0xff", thus the caller will need to do this.
+	 * Read array from i2c register. Unlike readReg the bytes values are not "&
+	 * 0xff", thus the caller will need to do this.
 	 * 
 	 * In order to read a register, we first do a "dummy write" by writing 0 bytes
 	 * to the register we want to read from. This is similar to writing to a
 	 * register except it's 1 byte rather than 2.
 	 * 
-	 * @param handle
-	 *            I2C file handle.
-	 * @param addr
-	 *            Address.
-	 * @param reg
-	 *            Register.
-	 * @param len
-	 *            Number of bytes to read.
+	 * @param handle I2C file handle.
+	 * @param addr   Address.
+	 * @param reg    Register.
+	 * @param len    Number of bytes to read.
 	 * @return Pointer to read byte array.
 	 * 
 	 */
@@ -155,12 +143,9 @@ public class I2c {
 	 * to the register we want to read from. This is similar to writing to a
 	 * register except it's 1 byte rather than 2.
 	 * 
-	 * @param handle
-	 *            I2C file handle.
-	 * @param addr
-	 *            Address.
-	 * @param reg
-	 *            Register.
+	 * @param handle I2C file handle.
+	 * @param addr   Address.
+	 * @param reg    Register.
 	 * @return Register byte value.
 	 * 
 	 */
@@ -171,12 +156,9 @@ public class I2c {
 	/**
 	 * Read two i2c registers and combine them.
 	 * 
-	 * @param handle
-	 *            I2C file handle.
-	 * @param addr
-	 *            Address.
-	 * @param reg
-	 *            Register.
+	 * @param handle I2C file handle.
+	 * @param addr   Address.
+	 * @param reg    Register.
 	 * @return Register word value.
 	 */
 	public int readWord(final PointerByReference handle, final short addr, final short reg) {
