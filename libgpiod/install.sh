@@ -7,6 +7,8 @@
 
 # Git repo
 libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
+# Branch (master currently required >= 5.5.0 kernel)
+branch="v1.4.x"
 
 # Get current directory
 curdir=$PWD
@@ -61,8 +63,8 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	sudo apt-get install -y libtool pkg-config autoconf-archive python3-dev >> $logfile 2>&1
 	# Move to home dir
 	cd $curdir/../../ >> $logfile 2>&1
-	log "Cloning libgpiod master"
-	git clone -b v1.4.x $libgpiodurl >> $logfile 2>&1
+	log "Cloning libgpiod $branch"
+	git clone -b $branch $libgpiodurl >> $logfile 2>&1
 	cd libgpiod >> $logfile 2>&1
 	# Add header file missing from Linux user space includes
 	mkdir -p $curdir/include/linux >> $logfile 2>&1

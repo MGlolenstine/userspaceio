@@ -100,9 +100,8 @@ structures behind a straightforward API.
 **Master branch is used.**
 
 Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh) as
-needed. If header files are not located by /etc/armbian-release or uname -r methods. Use
-something like `apt-cache search linux-headers-* | grep -i "4.16"` (change
-version number) to find header version to match your kernel.
+needed.
+* Change branch to master or other branch. 
 
 #### How pins are mapped
 This is based on testing on a NanoPi Duo. gpiochip0 starts at 0 and gpiochip1
