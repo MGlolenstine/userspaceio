@@ -39,7 +39,7 @@ else
 		rm -rf libgpiod >> $logfile 2>&1
 
 	    # Generate classes
-		java -jar ../jnaerator/jnaerator.jar -I /usr/include/arm-linux-gnueabihf -library gpiod -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libgpiod.so /usr/include/linux/time.h ../../libgpiod/include/gpiod.h ../../libgpiod/lib/core.c >> $logfile 2>&1
+		java -jar ../../jnaerator/jnaerator.jar -I /usr/include/arm-linux-gnueabihf -library gpiod -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libgpiod.so /usr/include/linux/time.h ../../libgpiod/include/gpiod.h ../../libgpiod/lib/core.c >> $logfile 2>&1
 
 		# Patch getFieldOrder(), see https://github.com/nativelibs4java/JNAerator/pull/111/commits/a2b0ae821369d6efed896627dccc1fa1f9677556
 		log "Patching generated source"
