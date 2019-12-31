@@ -53,7 +53,7 @@ else
 		wget https://raw.githubusercontent.com/nativelibs4java/JNAerator/master/jnaerator-runtime/src/main/java/com/ochafik/lang/jnaerator/runtime/CharByReference.java >> $logfile 2>&1
 		cd $curdir >> $logfile 2>&1
 		# Compile dependency code
-		javac -cp jna-4.5.2.jar com/ochafik/lang/jnaerator/runtime/*.java >> $logfile 2>&1
+		javac -cp jna-5.5.0.jar com/ochafik/lang/jnaerator/runtime/*.java >> $logfile 2>&1
 		# Create package
 		/usr/lib/jvm/jdk1.8.0/bin/jar cf jnaerator-runtime.jar com/ochafik/lang/jnaerator/runtime/*.* >> $logfile 2>&1
 	fi
