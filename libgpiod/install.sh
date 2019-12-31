@@ -5,15 +5,8 @@
 # Run in the libgpiod dir of the userspaceio project.
 #
 
-# Use tar.gz instead of git repo
-usegitrepo="True"
-libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/snapshot/"
-libgpiodarchive="libgpiod-1.0.1.tar.gz"
-libgpiodgiturl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
-
-# Default kernel version to use this if linux header source package not found
-# Make sure source is in /usr/src/linux-headers-$kerver
-defkerver="4.14.52"
+# Git repo
+libgpiodurl="https://github.com/brgl/libgpiod.git"
 
 # Get current directory
 curdir=$PWD
@@ -61,31 +54,15 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 		log "Installing Linux headers $package"
 		sudo apt-get install -y $package >> $logfile 2>&1
 	else
-        log "$package not found, using kernel version $defkerver that must be installed already"
-        kerver=$defkerver
+        log "$package not found, you must install correct kernel headers"
+        exit 1
 	fi
 	log "Installing required build packages"
 	sudo apt-get install -y libtool pkg-config autoconf-archive python3-dev >> $logfile 2>&1
 	# Move to home dir
 	cd $curdir/../../ >> $logfile 2>&1
-    # If usegitrepo is True then clone libgpiod, if False then use archive.
-    if [ "$usegitrepo" = "True" ]; then	
-		log "Cloning libgpiod master"
-		git clone $libgpiodgiturl >> $logfile 2>&1
-	else
-		# Clean up
-		log "Removing $tmpdir"
-		rm -rf "$tmpdir" >> $logfile 2>&1
-		mkdir -p "$tmpdir" >> $logfile 2>&1
-		log "Downloading $libgpiodurl$libgpiodarchive to $tmpdir     "
-		wget --directory-prefix=$tmpdir "$libgpiodurl$libgpiodarchive" 2>&1
-		log "Extracting $tmpdir/$libgpiodarchive to $tmpdir"
-		tar -xf "$tmpdir/$libgpiodarchive" -C "$tmpdir" >> $logfile 2>&1
-		mv $tmpdir/libgpiod-1.0 $HOME/libgpiod  >> $logfile 2>&1
-		# Clean up
-		log "Removing $tmpdir"
-		rm -rf "$tmpdir" >> $logfile 2>&1
-	fi	
+	log "Cloning libgpiod master"
+	git clone $libgpiodurl >> $logfile 2>&1
 	cd libgpiod >> $logfile 2>&1
 	# Add header file missing from Linux user space includes
 	mkdir -p $curdir/include/linux >> $logfile 2>&1
