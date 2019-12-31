@@ -39,7 +39,7 @@ else
 		rm -rf libgpiod >> $logfile 2>&1
 
 	    # Generate classes
-		java -jar ../../jnaerator/jnaerator.jar -I /usr/include/arm-linux-gnueabihf -library gpiod -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libgpiod.so /usr/include/linux/time.h ../../libgpiod/include/gpiod.h ../../libgpiod/lib/core.c >> $logfile 2>&1
+		java -jar ../jnaerator/jnaerator.jar -I /usr/include/arm-linux-gnueabihf -library gpiod -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libgpiod.so /usr/include/linux/time.h ../../libgpiod/include/gpiod.h ../../libgpiod/lib/core.c >> $logfile 2>&1
 
 		# Patch getFieldOrder(), see https://github.com/nativelibs4java/JNAerator/pull/111/commits/a2b0ae821369d6efed896627dccc1fa1f9677556
 		log "Patching generated source"
@@ -51,7 +51,7 @@ else
 		# Compile library
 		log "Compile library"
 		cd ../ >> $logfile 2>&1
-		javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar gpiod/*.java >> $logfile 2>&1
+		javac -cp ../jnaerator/jna-4.5.2.jar:../jnaerator/jnaerator-runtime.jar gpiod/*.java >> $logfile 2>&1
 		# Create package
 		/usr/lib/jvm/jdk1.8.0/bin/jar cf libgpiod.jar gpiod/*.* >> $logfile 2>&1
 	fi
@@ -59,7 +59,7 @@ fi
 
 # Compile demo code
 log "Compiling demo code"
-javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libgpiod.jar src/com/codeferm/demo/*.java >> $logfile 2>&1
+javac -cp ../jnaerator/jna-4.5.2.jar:../jnaerator/jnaerator-runtime.jar:libgpiod.jar src/com/codeferm/demo/*.java >> $logfile 2>&1
 
 # Create package
 rm -f demo.jar >> $logfile 2>&1
