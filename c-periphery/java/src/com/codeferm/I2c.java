@@ -58,7 +58,7 @@ public class I2c {
 	 * @param handle
 	 *            I2C file handle.
 	 */
-	public void close(final i2c_handle handle) {
+	public void close(final Peripheryi2cLibrary.i2c_t handle) {
 		if (lib.i2c_close(handle) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
 		}
@@ -99,7 +99,7 @@ public class I2c {
 	 *            Value to write.
 	 * @return 0 for no error or error code < 0.
 	 */
-	public int writeReg(final i2c_handle handle, final short addr, final short reg, final short value) {
+	public int writeReg(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg, final short value) {
 		final byte[] data = { (byte) reg, (byte) value };
 		return lib.i2c_transfer(handle, message(addr, (short) 0, data), SIZE1);
 	}
@@ -123,7 +123,7 @@ public class I2c {
 	 * @return Pointer to read byte array.
 	 * 
 	 */
-	public Pointer readArray(final i2c_handle handle, final short addr, final short reg, final int len) {
+	public Pointer readArray(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg, final int len) {
 		final i2c_msg msg = new i2c_msg();
 		// Structure.toArray allocates a contiguous block of memory internally
 		final i2c_msg[] msgs = (i2c_msg[]) msg.toArray(2);
@@ -163,7 +163,7 @@ public class I2c {
 	 * @return Register byte value.
 	 * 
 	 */
-	public short readReg(final i2c_handle handle, final short addr, final short reg) {
+	public short readReg(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg) {
 		return (short) (readArray(handle, addr, reg, 1).getByte(0) & 0xff);
 	}
 
@@ -178,7 +178,7 @@ public class I2c {
 	 *            Register.
 	 * @return Register word value.
 	 */
-	public int readWord(final i2c_handle handle, final short addr, final short reg) {
+	public int readWord(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg) {
 		final short high = readReg(handle, addr, reg);
 		// Increment register for next read
 		final short low = readReg(handle, addr, (short) (reg + 1));
