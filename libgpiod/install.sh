@@ -6,7 +6,7 @@
 #
 
 # Git repo
-libgpiodurl="https://github.com/brgl/libgpiod.git"
+libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
 
 # Get current directory
 curdir=$PWD
