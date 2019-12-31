@@ -1,7 +1,6 @@
 package com.codeferm;
 
 import peripheryserial.PeripheryserialLibrary;
-import peripheryserial.serial_handle;
 
 /**
  * Serial class to handle repetitive operations.
@@ -33,8 +32,8 @@ public class Serial {
 	 *            Buad rate.
 	 * @return File handle.
 	 */
-	public serial_handle open(final String device, final int baudRate) {
-		final serial_handle handle = new serial_handle();
+	public PeripheryserialLibrary.serial_t open(final String device, final int baudRate) {
+		final PeripheryserialLibrary.serial_t handle = new PeripheryserialLibrary.serial_t();
 		if (lib.serial_open(handle, device, baudRate) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
 		}
@@ -47,7 +46,7 @@ public class Serial {
 	 * @param handle
 	 *            Serial file handle.
 	 */
-	public void close(final serial_handle handle) {
+	public void close(final PeripheryserialLibrary.serial_t handle) {
 		if (lib.serial_close(handle) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
 		}
