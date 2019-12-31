@@ -97,13 +97,10 @@ Since linux 4.8 the GPIO sysfs interface is deprecated. User space should use
 the character device instead. libgpiod encapsulates the ioctl calls and data
 structures behind a straightforward API.
 
-**Master branch is using libgpiod 1.1. Use 1.0 branch for libgpiod
-1.0 support.**
+**Master branch is used.**
 
-Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
-* `usegitrepo` to use libgpiod-1.0.1.tar.gz or git master (defaut).
-* `defkerver` to specify pre-installed kernal headers. You need to do this
-if header files are not located by /etc/armbian-release or uname -r methods. Use
+Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh) as
+needed. If header files are not located by /etc/armbian-release or uname -r methods. Use
 something like `apt-cache search linux-headers-* | grep -i "4.16"` (change
 version number) to find header version to match your kernel.
 
@@ -132,7 +129,7 @@ libgpiod always starts at 0 and calculate the offset. Thus gpiochip1 starts at
 352 and the on board button is at 355, so 355 - 352 = 3 for libgpiod.
 
 #### Python bindings
-libgpiod 1.1 includes Python bindings, so CFFI is not used.
+libgpiod includes Python bindings, so CFFI is not used.
 
 To run demos:
 * `alias python=python3`
