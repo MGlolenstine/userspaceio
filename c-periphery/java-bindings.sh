@@ -56,7 +56,7 @@ else
 		# Compile library
 		log "Compile library"
 		cd ../ >> $logfile 2>&1
-		javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java peripherymmio/*.java >> $logfile 2>&1
+		javac -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java peripherymmio/*.java >> $logfile 2>&1
 
 		# Create package
 		/usr/lib/jvm/jdk1.8.0/bin/jar cf libperiphery.jar peripheryi2c/*.* peripheryserial/*.* peripheryspi/*.* peripherymmio/*.* >> $logfile 2>&1
@@ -65,7 +65,7 @@ fi
 
 # Compile demo code
 log "Compiling demo code"
-javac -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libperiphery.jar src/com/codeferm/*.java src/com/codeferm/demo/*.java >> $logfile 2>&1
+javac -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar:libperiphery.jar src/com/codeferm/*.java src/com/codeferm/demo/*.java >> $logfile 2>&1
 
 # Create package
 rm -f demo.jar >> $logfile 2>&1
