@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
 
 import peripheryspi.PeripheryspiLibrary;
-import peripheryspi.spi_handle;
 
 /**
  * SPI class to handle repetitive operations.
@@ -39,8 +38,8 @@ public class Spi {
 	 *            Maximum speed.
 	 * @return File handle.
 	 */
-	public spi_handle open(final String device, final int mode, final int maxSpeed) {
-		final spi_handle handle = new spi_handle();
+	public PeripheryspiLibrary.spi_t open(final String device, final int mode, final int maxSpeed) {
+		final PeripheryspiLibrary.spi_t handle = new PeripheryspiLibrary.spi_t();
 		if (lib.spi_open(handle, device, mode, maxSpeed) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
 		}
@@ -53,7 +52,7 @@ public class Spi {
 	 * @param handle
 	 *            SPI file handle.
 	 */
-	public void close(final spi_handle handle) {
+	public void close(final PeripheryspiLibrary.spi_t handle) {
 		if (lib.spi_close(handle) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
 		}
@@ -70,7 +69,7 @@ public class Spi {
 	 *            Receive buffer.
 	 * @return Receive buffer.
 	 */
-	public ByteBuffer transfer(final spi_handle handle, final byte[] txBuf, final ByteBuffer rxBuf) {
+	public ByteBuffer transfer(final PeripheryspiLibrary.spi_t handle, final byte[] txBuf, final ByteBuffer rxBuf) {
 		int len = 0;
 		if (txBuf != null) {
 			len = txBuf.length;
