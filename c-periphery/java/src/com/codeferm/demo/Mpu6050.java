@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.codeferm.I2c;
 
-import peripheryi2c.i2c_t;
+import peripheryi2c.i2c_handle;
 
 /**
  * Triple Axis Accelerometer & Gyro - MPU-6050 sensor example.
@@ -27,7 +27,7 @@ public class Mpu6050 {
 	 *            Address.
 	 * @return Temperature in degrees Fahrenheit.
 	 */
-	public double getTemp(final I2c i2c, final i2c_t handle, final short addr) {
+	public double getTemp(final I2c i2c, final i2c_handle handle, final short addr) {
 		return 1.8 * ((i2c.readWord(handle, addr, (short) 0x41) / 340) + 36.53) + 32;
 	}
 
@@ -44,7 +44,7 @@ public class Mpu6050 {
 	 * @param range
 	 *            The range to set the accelerometer to.
 	 */
-	public void setAccelRange(final I2c i2c, final i2c_t handle, final short addr, final short range) {
+	public void setAccelRange(final I2c i2c, final i2c_handle handle, final short addr, final short range) {
 		// First change it to 0x00 to make sure we write the correct value later
 		i2c.writeReg(handle, addr, (short) 0x1c, (short) 0x00);
 		// Write the new range to the 0x1c register
@@ -65,7 +65,7 @@ public class Mpu6050 {
 	 * @param raw
 	 *            True to return raw data.
 	 */
-	public short readAccelRange(final I2c i2c, final i2c_t handle, final short addr, final boolean raw) {
+	public short readAccelRange(final I2c i2c, final i2c_handle handle, final short addr, final boolean raw) {
 		// Get the raw value
 		final short rawData = i2c.readReg(handle, addr, (short) 0x1c);
 		if (raw) {
@@ -101,7 +101,7 @@ public class Mpu6050 {
 	 *            True to return Gs.
 	 * @return Map of values.
 	 */
-	public Map<String, Double> getAccelData(final I2c i2c, final i2c_t handle, final short addr, final boolean g) {
+	public Map<String, Double> getAccelData(final I2c i2c, final i2c_handle handle, final short addr, final boolean g) {
 		// Read the data from the MPU-6050
 		int x = i2c.readWord(handle, addr, (short) 0x3b);
 		int y = i2c.readWord(handle, addr, (short) 0x3d);
@@ -153,7 +153,7 @@ public class Mpu6050 {
 	 * @param range
 	 *            The range to set the gyroscope to.
 	 */
-	public void setGyroRange(final I2c i2c, final i2c_t handle, final short addr, final short range) {
+	public void setGyroRange(final I2c i2c, final i2c_handle handle, final short addr, final short range) {
 		// First change it to 0x00 to make sure we write the correct value later
 		i2c.writeReg(handle, addr, (short) 0x1b, (short) 0x00);
 		// Write the new range to the 0x1B register
@@ -175,7 +175,7 @@ public class Mpu6050 {
 	 *            True to return raw data.
 	 * @return
 	 */
-	public short readGyroRange(final I2c i2c, final i2c_t handle, final short addr, final boolean raw) {
+	public short readGyroRange(final I2c i2c, final i2c_handle handle, final short addr, final boolean raw) {
 		// Get the raw value
 		final short rawData = i2c.readReg(handle, addr, (short) 0x1b);
 		if (raw) {
@@ -207,7 +207,7 @@ public class Mpu6050 {
 	 *            Address.
 	 * @return Map of values.
 	 */
-	public Map<String, Double> getGyroData(final I2c i2c, final i2c_t handle, final short addr) {
+	public Map<String, Double> getGyroData(final I2c i2c, final i2c_handle handle, final short addr) {
 		// Read the data from the MPU-6050
 		int x = i2c.readWord(handle, addr, (short) 0x43);
 		int y = i2c.readWord(handle, addr, (short) 0x45);
@@ -255,7 +255,7 @@ public class Mpu6050 {
 		// Use to debug if JNA cannot find shared library
 		System.setProperty("jna.debug_load", "false");
 		System.setProperty("jna.debug_load.jna", "false");
-		final i2c_t handle = i2c.open(device);
+		final i2c_handle handle = i2c.open(device);
 		final Mpu6050 app = new Mpu6050();
 		// Wake up the MPU-6050 since it starts in sleep mode
 		i2c.writeReg(handle, address, (short) 0x6b, (short) 0x00);
