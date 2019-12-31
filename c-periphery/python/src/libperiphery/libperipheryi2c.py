@@ -46,7 +46,7 @@ class libperipheryi2c:
             I2C_ERROR_CLOSE             = -6,
         };
         
-        typedef struct i2c_handle {
+        typedef struct i2c_t {
             int fd;
         
             struct {

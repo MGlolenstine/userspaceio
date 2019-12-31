@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.codeferm.I2c;
 import com.sun.jna.Pointer;
 
-import peripheryi2c.i2c_handle;
+import peripheryi2c.i2c_t;
 
 /**
  * ADXL345 3-Axis, ±2 g/±4 g/±8 g/±16 g digital accelerometer example. I'm using
@@ -42,7 +42,7 @@ public class Adxl345 {
 	 *            Address.
 	 * @return Range.
 	 */
-	public short getRange(final I2c i2c, final i2c_handle handle, final short addr) {
+	public short getRange(final I2c i2c, final i2c_t handle, final short addr) {
 		return (short) (i2c.readReg(handle, addr, (short) 0x31) & 0x03);
 	}
 
@@ -73,7 +73,7 @@ public class Adxl345 {
 	 * @param value
 	 *            Range.
 	 */
-	public void setRange(final I2c i2c, final i2c_handle handle, final short addr, final short value) {
+	public void setRange(final I2c i2c, final i2c_t handle, final short addr, final short value) {
 		// 0x08 sets fill resolution bit to enabled
 		i2c.writeReg(handle, addr, (short) 0x31,
 				(short) (((i2c.readReg(handle, addr, (short) 0x31) & ~0x0f) | value) | 0x08));
@@ -92,7 +92,7 @@ public class Adxl345 {
 	 * 
 	 * @return Full resolution enabled setting
 	 */
-	public boolean getFullResolution(final I2c i2c, final i2c_handle handle, final short addr) {
+	public boolean getFullResolution(final I2c i2c, final i2c_t handle, final short addr) {
 		return (i2c.readReg(handle, addr, (short) 0x31) & 0x03) == 0x08;
 	}
 
@@ -136,7 +136,7 @@ public class Adxl345 {
 	 *            Address.
 	 * @return Range.
 	 */
-	public short getDataRate(final I2c i2c, final i2c_handle handle, final short addr) {
+	public short getDataRate(final I2c i2c, final i2c_t handle, final short addr) {
 		return (short) (i2c.readReg(handle, addr, (short) 0x2c) & 0x0f);
 	}
 
@@ -182,7 +182,7 @@ public class Adxl345 {
 	 * @param value
 	 *            Data rate.
 	 */
-	public void setDataRate(final I2c i2c, final i2c_handle handle, final short addr, final short value) {
+	public void setDataRate(final I2c i2c, final i2c_t handle, final short addr, final short value) {
 		i2c.writeReg(handle, addr, (short) 0x2c, (short) (value & 0x0f));
 	}
 
@@ -215,7 +215,7 @@ public class Adxl345 {
 	 *            Address.
 	 * @return Map of Integers keyed by x, y, z.
 	 */
-	public Map<String, Integer> read(final I2c i2c, final i2c_handle handle, final short addr) {
+	public Map<String, Integer> read(final I2c i2c, final i2c_t handle, final short addr) {
 		// Read all 6 registers at once
 		final Pointer data = i2c.readArray(handle, addr, (short) 0x32, 6);
 		final Map<String, Integer> map = new HashMap<>();
@@ -281,7 +281,7 @@ public class Adxl345 {
 		// Use to debug if JNA cannot find shared library
 		System.setProperty("jna.debug_load", "false");
 		System.setProperty("jna.debug_load.jna", "false");
-		final i2c_handle handle = i2c.open(device);
+		final i2c_t handle = i2c.open(device);
 		final Adxl345 app = new Adxl345();
 		// Check device ID
 		if (i2c.readReg(handle, address, (short) 0x00) == 0xe5) {
