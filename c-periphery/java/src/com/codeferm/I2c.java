@@ -3,6 +3,7 @@ package com.codeferm;
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 import peripheryi2c.Peripheryi2cLibrary;
 import peripheryi2c.i2c_msg;
@@ -44,8 +45,8 @@ public class I2c {
 	 *            Device path.
 	 * @return File handle.
 	 */
-	public Peripheryi2cLibrary.i2c_t open(final String device) {
-		final Peripheryi2cLibrary.i2c_t handle = new Peripheryi2cLibrary.i2c_t();
+	public PointerByReference open(final String device) {
+		final PointerByReference handle = lib.i2c_new();
 		if (lib.i2c_open(handle, device) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
 		}
@@ -58,7 +59,7 @@ public class I2c {
 	 * @param handle
 	 *            I2C file handle.
 	 */
-	public void close(final Peripheryi2cLibrary.i2c_t handle) {
+	public void close(final PointerByReference handle) {
 		if (lib.i2c_close(handle) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
 		}
@@ -99,7 +100,7 @@ public class I2c {
 	 *            Value to write.
 	 * @return 0 for no error or error code < 0.
 	 */
-	public int writeReg(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg, final short value) {
+	public int writeReg(final PointerByReference handle, final short addr, final short reg, final short value) {
 		final byte[] data = { (byte) reg, (byte) value };
 		return lib.i2c_transfer(handle, message(addr, (short) 0, data), SIZE1);
 	}
@@ -123,7 +124,7 @@ public class I2c {
 	 * @return Pointer to read byte array.
 	 * 
 	 */
-	public Pointer readArray(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg, final int len) {
+	public Pointer readArray(final PointerByReference handle, final short addr, final short reg, final int len) {
 		final i2c_msg msg = new i2c_msg();
 		// Structure.toArray allocates a contiguous block of memory internally
 		final i2c_msg[] msgs = (i2c_msg[]) msg.toArray(2);
@@ -163,7 +164,7 @@ public class I2c {
 	 * @return Register byte value.
 	 * 
 	 */
-	public short readReg(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg) {
+	public short readReg(final PointerByReference handle, final short addr, final short reg) {
 		return (short) (readArray(handle, addr, reg, 1).getByte(0) & 0xff);
 	}
 
@@ -178,7 +179,7 @@ public class I2c {
 	 *            Register.
 	 * @return Register word value.
 	 */
-	public int readWord(final Peripheryi2cLibrary.i2c_t handle, final short addr, final short reg) {
+	public int readWord(final PointerByReference handle, final short addr, final short reg) {
 		final short high = readReg(handle, addr, reg);
 		// Increment register for next read
 		final short low = readReg(handle, addr, (short) (reg + 1));

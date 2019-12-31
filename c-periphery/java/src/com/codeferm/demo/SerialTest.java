@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import com.codeferm.Serial;
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
+import com.sun.jna.ptr.PointerByReference;
 
 /**
  * Serial loop back test.
@@ -38,7 +39,7 @@ public class SerialTest {
 		// Use to debug if JNA cannot find shared library
 		System.setProperty("jna.debug_load", "false");
 		System.setProperty("jna.debug_load.jna", "false");
-		final PeripheryserialLibrary.serial_t handle = serial.open(device, baudRate);
+		final PointerByReference handle = serial.open(device, baudRate);
 		final byte[] txBuf = new byte[128];
 		txBuf[0] = (byte) 0xff;
 		txBuf[127] = (byte) 0x80;

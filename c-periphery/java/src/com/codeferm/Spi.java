@@ -3,6 +3,7 @@ package com.codeferm;
 import java.nio.ByteBuffer;
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize;
+import com.sun.jna.ptr.PointerByReference;
 
 import peripheryspi.PeripheryspiLibrary;
 
@@ -38,8 +39,8 @@ public class Spi {
 	 *            Maximum speed.
 	 * @return File handle.
 	 */
-	public PeripheryspiLibrary.spi_t open(final String device, final int mode, final int maxSpeed) {
-		final PeripheryspiLibrary.spi_t handle = new PeripheryspiLibrary.spi_t();
+	public PointerByReference open(final String device, final int mode, final int maxSpeed) {
+		final PointerByReference handle = lib.spi_new();
 		if (lib.spi_open(handle, device, mode, maxSpeed) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
 		}
@@ -52,7 +53,7 @@ public class Spi {
 	 * @param handle
 	 *            SPI file handle.
 	 */
-	public void close(final PeripheryspiLibrary.spi_t handle) {
+	public void close(final PointerByReference handle) {
 		if (lib.spi_close(handle) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
 		}
@@ -69,7 +70,7 @@ public class Spi {
 	 *            Receive buffer.
 	 * @return Receive buffer.
 	 */
-	public ByteBuffer transfer(final PeripheryspiLibrary.spi_t handle, final byte[] txBuf, final ByteBuffer rxBuf) {
+	public ByteBuffer transfer(final PointerByReference handle, final byte[] txBuf, final ByteBuffer rxBuf) {
 		int len = 0;
 		if (txBuf != null) {
 			len = txBuf.length;

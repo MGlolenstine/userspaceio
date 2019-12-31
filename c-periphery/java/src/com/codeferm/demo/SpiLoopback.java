@@ -3,6 +3,7 @@ package com.codeferm.demo;
 import java.nio.ByteBuffer;
 
 import com.codeferm.Spi;
+import com.sun.jna.ptr.PointerByReference;
 
 import peripheryserial.PeripheryserialLibrary;
 
@@ -28,7 +29,7 @@ public class SpiLoopback {
 		// Use to debug if JNA cannot find shared library
 		System.setProperty("jna.debug_load", "false");
 		System.setProperty("jna.debug_load.jna", "false");
-		final PeripheryspiLibrary.spi_t handle = spi.open(device, PeripheryserialLibrary.SPI_MODE_0, maxSpeed);
+		final PointerByReference handle = spi.open(device, PeripheryserialLibrary.SPI_MODE_0, maxSpeed);
 		final byte[] txBuf = new byte[128];
 		txBuf[0] = (byte) 0xff;
 		txBuf[127] = (byte) 0x80;

@@ -1,5 +1,7 @@
 package com.codeferm;
 
+import com.sun.jna.ptr.PointerByReference;
+
 import peripheryserial.PeripheryserialLibrary;
 
 /**
@@ -32,8 +34,8 @@ public class Serial {
 	 *            Buad rate.
 	 * @return File handle.
 	 */
-	public PeripheryserialLibrary.serial_t open(final String device, final int baudRate) {
-		final PeripheryserialLibrary.serial_t handle = new PeripheryserialLibrary.serial_t();
+	public PointerByReference open(final String device, final int baudRate) {
+		final PointerByReference handle = lib.serial_new();
 		if (lib.serial_open(handle, device, baudRate) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
 		}
@@ -46,7 +48,7 @@ public class Serial {
 	 * @param handle
 	 *            Serial file handle.
 	 */
-	public void close(final PeripheryserialLibrary.serial_t handle) {
+	public void close(final PointerByReference handle) {
 		if (lib.serial_close(handle) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
 		}
