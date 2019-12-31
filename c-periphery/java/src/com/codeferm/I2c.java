@@ -5,7 +5,6 @@ import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 
 import peripheryi2c.Peripheryi2cLibrary;
-import peripheryi2c.i2c_handle;
 import peripheryi2c.i2c_msg;
 
 /**
