@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.codeferm.I2c;
+import peripheryi2c.Peripheryi2cLibrary;
 
 /**
  * Triple Axis Accelerometer & Gyro - MPU-6050 sensor example.

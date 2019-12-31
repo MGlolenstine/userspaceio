@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.codeferm.I2c;
 import com.sun.jna.Pointer;
+import peripheryi2c.Peripheryi2cLibrary;
 
 /**
  * ADXL345 3-Axis, ±2 g/±4 g/±8 g/±16 g digital accelerometer example. I'm using
