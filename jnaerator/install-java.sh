@@ -23,28 +23,27 @@ log(){
 
 # JDK archive stuff
 javahome=/usr/lib/jvm/jdk1.8.0
-jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/"
-jdkver="jdk1.8.0_181"
 # ARM 32
 if [ "$arch" = "armv7l" ]; then
-	jdkarchive="jdk-8u181-linux-arm32-vfp-hflt.tar.gz"
+	jdkurl="https://cdn.azul.com/zulu-embedded/bin/zulu8.42.0.195-ca-jdk1.8.0_232-linux_aarch32hf.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-arm.jar"
 # ARM 64
 elif [ "$arch" = "aarch64" ]; then
-	jdkarchive="jdk-8u181-linux-arm64-vfp-hflt.tar.gz"
+	jdkurl="https://cdn.azul.com/zulu-embedded/bin/zulu8.42.0.195-ca-jdk1.8.0_232-linux_aarch64.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-aarch64.jar"
-# X86
+# X86_32
 elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-	jdkarchive="jdk-8u181-linux-i586.tar.gz"
+	jdkurl="https://cdn.azul.com/zulu/bin/zulu8.42.0.23-ca-jdk8.0.232-linux_i686.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-x86.jar"
 # X86_64	
 elif [ "$arch" = "x86_64" ]; then
-	jdkarchive="jdk-8u181-linux-x64.tar.gz"
+    jdkurl="https://cdn.azul.com/zulu/bin/zulu8.42.0.23-ca-jdk8.0.232-linux_x64.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-x86-64.jar"
 fi
+jdkarchive=$(basename "$jdkurl")
 
 # JNA jar (4.5.1 causes UnsatisfiedLinkError)
-jnajar="repo1.maven.org/maven2/net/java/dev/jna/jna/4.5.2/jna-4.5.2.jar"
+jnajar="repo1.maven.org/maven2/net/java/dev/jna/jna/5.5.0/jna-5.5.0.jar"
 
 log "Installing Java"
 
@@ -53,17 +52,20 @@ log "Removing temp dir $tmpdir"
 rm -rf "$tmpdir" >> $logfile 2>&1
 mkdir -p "$tmpdir" >> $logfile 2>&1
 
-# Install Oracle Java JDK
-echo -n "Downloading $jdkarchive to $tmpdir     "
-wget --directory-prefix=$tmpdir --timestamping --progress=dot --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "$jdkurl$jdkarchive" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
-echo
+# Install Zulu Java JDK
+log "Downloading $jdkarchive to $tmpdir"
+wget -q --directory-prefix=$tmpdir "$jdkurl" >> $logfile 2>&1
 log "Extracting $jdkarchive to $tmpdir"
 tar -xf "$tmpdir/$jdkarchive" -C "$tmpdir" >> $logfile 2>&1
 log "Removing $javahome"
 rm -rf "$javahome" >> $logfile 2>&1
+# Remove .gz
+filename="${jdkarchive%.*}"
+# Remove .tar
+filename="${filename%.*}"
 mkdir -p /usr/lib/jvm >> $logfile 2>&1
-log "Moving $tmpdir/$jdkver to $javahome"
-mv "$tmpdir/$jdkver" "$javahome" >> $logfile 2>&1
+log "Moving $tmpdir/$filename to $javahome"
+mv "$tmpdir/$filename" "$javahome" >> $logfile 2>&1
 update-alternatives --quiet --install "/usr/bin/java" "java" "$javahome/bin/java" 1 >> $logfile 2>&1
 update-alternatives --quiet --install "/usr/bin/javac" "javac" "$javahome/bin/javac" 1 >> $logfile 2>&1
 # See if JAVA_HOME exists and if not add it to /etc/environment
