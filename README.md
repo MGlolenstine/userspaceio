@@ -97,7 +97,7 @@ Since linux 4.8 the GPIO sysfs interface is deprecated. User space should use
 the character device instead. libgpiod encapsulates the ioctl calls and data
 structures behind a straightforward API.
 
-**Master branch is used.**
+**v1.4.x branch is used since master requires >= 5.5.0 kernel.**
 
 Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh) as
 needed.
