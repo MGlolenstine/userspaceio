@@ -140,7 +140,7 @@ line 203 (GPIOG11) on NanoPi Duo (the default).
 #### Java bindings
 To run demos:
 * `cd ~/userspaceio/libgpiod/java`
-* `java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libgpiod.jar:demo.jar com.codeferm.demo.LedTest 0 203`
+* `java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar:libgpiod.jar:demo.jar com.codeferm.demo.LedTest 0 203`
 to run LED test after wiring up to line 203 (GPIOG11) on NanoPi Duo (the default). 
 
 ## c-periphery
@@ -159,7 +159,7 @@ SPI loop back on NanoPi Duo (the default). Use a jumper wire between MI and MO.
 #### Java bindings
 To run demos:
 * `cd ~/userspaceio/c-periphery/java`
-* `java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libperiphery.jar:demo.jar com.codeferm.demo.Mpu6050`
+* `java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar:libperiphery.jar:demo.jar com.codeferm.demo.Mpu6050`
 to run Triple Axis Accelerometer & Gyro MPU-6050 sensor example. 
 
 ## pwmio
@@ -178,7 +178,7 @@ I wired up the LED to the PWM pin.
 #### Java bindings
 To run demos:
 * `cd ~/userspaceio/pwmio/java`
-* `sudo java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-4.5.2.jar:../../jnaerator/jnaerator-runtime.jar:libpwmio.jar:demo.jar com.codeferm.demo.LedFlash`
+* `sudo java -Djava.library.path=/usr/local/lib -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar:libpwmio.jar:demo.jar com.codeferm.demo.LedFlash`
 to make LED flash and increase intensity. 
 
 ### References
