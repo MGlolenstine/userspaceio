@@ -1,4 +1,5 @@
 package com.codeferm.demo;
+
 import java.util.concurrent.TimeUnit;
 
 import gpiod.GpiodLibrary;
@@ -6,16 +7,13 @@ import gpiod.gpiod_chip;
 import gpiod.gpiod_line;
 
 /**
- * Simple LED blink. Using the NanoPi Duo connect a 220Ω resistor to the anode
- * (the long pin of the LED), then the resistor to 3.3 V, and connect the
- * cathode (the short pin) of the LED to line 203 (IOG11). The anode of LED
- * connects to a current-limiting resistor and then to 3.3V. Therefore, to turn
- * on an LED, we need to make pin 12 low (0V) level.
+ * Using the NanoPi Duo connect a 220Ω resistor to ground, then the resistor to
+ * the cathode (the short pin) of the LED. Connect the anode (the long pin) of
+ * the LED to line 203 (IOG11).
  * 
  * See images/ledtest.jpg for schematic.
- *  
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * 
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class LedTest {
@@ -44,16 +42,16 @@ public class LedTest {
 			// Verify we have line
 			if (line != null) {
 				// This will set line for output and set initial value (LED on)
-				if (lib.gpiod_line_request_output(line, consumer, 0) == 0) {
+				if (lib.gpiod_line_request_output(line, consumer, 1) == 0) {
 					System.out.println("\nLED on");
 					TimeUnit.SECONDS.sleep(3);
-		            // LED off
-		            lib.gpiod_line_set_value(line, 1);
-		            System.out.println("LED off");
+					// LED off
+					lib.gpiod_line_set_value(line, 0);
+					System.out.println("LED off");
 				} else {
 					System.out.println(String.format("Unable to set line %d to output", lineNum));
 				}
-	            lib.gpiod_line_release(line);					
+				lib.gpiod_line_release(line);
 			} else {
 				System.out.println(String.format("Unable to get line %d", lineNum));
 			}
