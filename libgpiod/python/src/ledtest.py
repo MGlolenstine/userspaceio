@@ -5,11 +5,9 @@
 """
 Simple LED blink
 -------------
-Using the NanoPi Duo connect a 220Ω resistor to the anode (the long pin of
-the LED), then the resistor to 3.3 V, and connect the cathode (the short
-pin) of the LED to line 203 (IOG11). The anode of LED connects to a
-current-limiting resistor and then to 3.3V. Therefore, to turn on an LED,
-we need to make pin 12 low (0V) level.
+Using the NanoPi Duo connect a 220Ω resistor to ground, then the resistor to
+the cathode (the short pin) of the LED. Connect the anode (the long pin) of the
+LED to line 203 (IOG11).
 
 See images/ledtest.jpg for schematic.
 """
@@ -33,11 +31,11 @@ class ledtest:
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
         count = 0
         while count < 10:
-            line.set_value(0)         
+            line.set_value(1)         
             print("\nLED on")
             time.sleep(1)
             # LED off
-            line.set_value(1)
+            line.set_value(0)
             print("LED off")
             time.sleep(1)
             count += 1
