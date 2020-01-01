@@ -44,6 +44,8 @@ class libperipherymmio:
             } error;
         } mmio_t;        
         
+        mmio_t *mmio_new(void);
+        
         int mmio_open(mmio_t *mmio, uintptr_t base, size_t size);
         
         void *mmio_ptr(mmio_t *mmio);
@@ -65,6 +67,8 @@ class libperipherymmio:
         int mmio_write(mmio_t *mmio, uintptr_t offset, const uint8_t *buf, size_t len);
         
         int mmio_close(mmio_t *mmio);
+        
+        void mmio_free(mmio_t *mmio);        
         
         uintptr_t mmio_base(mmio_t *mmio);
         

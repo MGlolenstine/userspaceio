@@ -47,6 +47,8 @@ class libperipheryspi:
             LSB_FIRST,
         } spi_bit_order_t;
         
+        spi_t *spi_new(void);
+        
         int spi_open(spi_t *spi, const char *path, unsigned int mode,
                         uint32_t max_speed);
                         
@@ -57,6 +59,8 @@ class libperipheryspi:
         int spi_transfer(spi_t *spi, const uint8_t *txbuf, uint8_t *rxbuf, size_t len);
         
         int spi_close(spi_t *spi);
+        
+        void spi_free(spi_t *spi);
         
         int spi_get_mode(spi_t *spi, unsigned int *mode);
         
@@ -91,7 +95,7 @@ class libperipheryspi:
     def open(self, device, mode, maxSpeed):
         """Open SPI device and return handle.
         """
-        handle = self.ffi.new("spi_t*")
+        handle = self.lib.spi_new()
         if self.lib.spi_open(handle, device.encode('utf-8'), mode, maxSpeed) < 0:
             raise RuntimeError(self.ffi.string(self.lib.spi_errmsg(handle)).decode('utf-8'))
         return handle
@@ -101,6 +105,8 @@ class libperipheryspi:
         """
         if self.lib.spi_close(handle) < 0:
             raise RuntimeError(self.ffi.string(self.lib.spi_errmsg(handle)).decode('utf-8'))
+        else:
+            self.lib.spi_free(handle)        
         return handle        
 
     def transfer(self, handle, txbuf, rxbuf):

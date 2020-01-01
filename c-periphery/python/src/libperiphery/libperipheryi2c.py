@@ -55,11 +55,15 @@ class libperipheryi2c:
             } error;
         } i2c_t;
         
+        i2c_t *i2c_new(void);
+        
         int i2c_open(i2c_t *i2c, const char *path);
         
         int i2c_transfer(i2c_t *i2c, struct i2c_msg *msgs, size_t count);
         
         int i2c_close(i2c_t *i2c);
+        
+        void i2c_free(i2c_t *i2c);
         
         int i2c_fd(i2c_t *i2c);
         
@@ -74,7 +78,7 @@ class libperipheryi2c:
     def open(self, device):
         """Open I2C device and return handle.
         """
-        handle = self.ffi.new("i2c_t*")
+        handle = self.lib.i2c_new()
         if self.lib.i2c_open(handle, device.encode('utf-8')) < 0:
             raise RuntimeError(self.ffi.string(self.lib.i2c_errmsg(handle)).decode('utf-8'))
         return handle
@@ -84,6 +88,8 @@ class libperipheryi2c:
         """
         if self.lib.i2c_close(handle) < 0:
             raise RuntimeError(self.ffi.string(self.lib.i2c_errmsg(handle)).decode('utf-8'))
+        else:
+            self.lib.i2c_free(handle)
         
     def writeReg(self, handle, addr, reg, value):
         """Write value to i2c register.

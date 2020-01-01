@@ -43,6 +43,8 @@ class libperipheryserial:
             PARITY_EVEN,
         } serial_parity_t;
         
+        serial_t *serial_new(void);
+        
         int serial_open(serial_t *serial, const char *path, uint32_t baudrate);
 
         int serial_open_advanced(serial_t *serial, const char *path,
@@ -63,6 +65,8 @@ class libperipheryserial:
         int serial_poll(serial_t *serial, int timeout_ms);
         
         int serial_close(serial_t *serial);
+        
+        void serial_free(serial_t *serial);        
         
         int serial_get_baudrate(serial_t *serial, uint32_t *baudrate);
         
@@ -101,7 +105,7 @@ class libperipheryserial:
     def open(self, device, baudrate):
         """Open serial device and return handle.
         """
-        handle = self.ffi.new("serial_t*")
+        handle = self.lib.serial_new()
         if self.lib.serial_open(handle, device.encode('utf-8'), baudrate) < 0:
             raise RuntimeError(self.ffi.string(self.lib.serial_errmsg(handle)).decode('utf-8'))
         return handle
@@ -111,4 +115,5 @@ class libperipheryserial:
         """
         if self.lib.serial_close(handle) < 0:
             raise RuntimeError(self.ffi.string(self.lib.serial_errmsg(handle)).decode('utf-8'))
-        return handle
+        else:
+            self.lib.serial_free(handle)        
