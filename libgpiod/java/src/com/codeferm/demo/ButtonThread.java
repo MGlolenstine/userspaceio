@@ -74,19 +74,11 @@ public class ButtonThread {
 					rc = -1;
 				}
 			}
+                        System.out.println("Exit thread while");
 		});
 	}
-
-	public static void main(String args[]) throws InterruptedException {
-		int chipNum = 1;
-		int lineNum = 3;
-		// See if there are args to parse
-		if (args.length > 0) {
-			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipNum = Integer.parseInt(args[0]);
-			// GPIO line number (default 3 button on NanoPi Duo)
-			lineNum = Integer.parseInt(args[1]);
-		}
+	
+	public void run(int chipNum, int lineNum) throws InterruptedException {
 		// Use class name for consumer
 		final String consumer = ButtonThread.class.getSimpleName();
 		// Load library
@@ -135,5 +127,19 @@ public class ButtonThread {
 		} else {
 			System.out.println(String.format("Unable to open chip %d", chipNum));
 		}
+	}
+
+	public static void main(String args[]) throws InterruptedException {
+		int chipNum = 1;
+		int lineNum = 3;
+		// See if there are args to parse
+		if (args.length > 0) {
+			// GPIO chip number (default 1 '/dev/gpiochip1')
+			chipNum = Integer.parseInt(args[0]);
+			// GPIO line number (default 3 button on NanoPi Duo)
+			lineNum = Integer.parseInt(args[1]);
+		}
+		ButtonThread app = new ButtonThread();
+		app.run(chipNum, lineNum);
 	}
 }
