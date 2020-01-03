@@ -45,6 +45,8 @@ public class ButtonThread {
 			final ExecutorService executor, final GpiodLibrary lib) {
 		// Returned event
 		final gpiod_line_event event = new gpiod_line_event();
+		// Clear out first event, Duo always gets rising edge
+		lib.gpiod_line_event_read(line, event);
 		// Timestamp formatter
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		// Submit lambda
