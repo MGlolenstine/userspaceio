@@ -3,17 +3,21 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import gpiod.GpiodLibrary;
+import gpiod.gpiod_chip;
+import gpiod.gpiod_line;
 import gpiod.timespec;
 
 /**
- * HC-SR501 sensor example using context less event loop to implement blocking callback.
+ * HC-SR501 sensor example using contextless event loop to implement blocking callback.
  * 
  * Monitor rising edge (motion detected) and falling edge (no motion).
+ * If LED is wired up then motion detection lights LED.
  * 
  * Copyright (c) 2018 Steven P. Goldsmith
  * See LICENSE.md for details.
@@ -22,19 +26,28 @@ import gpiod.timespec;
 public class Hcsr501 {
 
 	public static void main(String args[]) throws InterruptedException {
-		String chipNum = "/dev/gpiochip1";
-		int lineNum = 3;
+		String chipName = "/dev/gpiochip1";
+		int hcsr501LineNum = 11;
+		int chipNum = 0;
+		int ledLineNum = 203;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipNum = args[0];
-			// GPIO line number (default 3 button on NanoPi Duo)
-			lineNum = Integer.parseInt(args[1]);
+			// GPIO chip name (default '/dev/gpiochip1')
+			chipName = args[0];
+			// GPIO line number (default 11 IRRX on NanoPi Duo)
+			hcsr501LineNum = Integer.parseInt(args[1]);
+			// GPIO chip number (default 0 '/dev/gpiochip0')
+			chipNum = Integer.parseInt(args[2]);
+			// GPIO line number (default 203 IOG11 on NanoPi Duo)
+			ledLineNum = Integer.parseInt(args[3]);
 		}
 		// Use class name for consumer
 		final String consumer = Hcsr501.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
+		final gpiod_chip chip = lib.gpiod_chip_open_by_number(chipNum);
+		gpiod_line line = lib.gpiod_chip_get_line(chip, ledLineNum);
+		lib.gpiod_line_request_output(line, consumer, 0);
 		// Timestamp formatter
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		// Use lambda for callback
@@ -50,8 +63,12 @@ public class Hcsr501 {
 						Instant.ofEpochMilli(timeSpec.tv_sec.longValue() * 1000), ZoneId.systemDefault());
 				if (evtype == GpiodLibrary.GPIOD_CTXLESS_EVENT_CB_RISING_EDGE) {
 					System.out.println(String.format("Motion detected %s", date.format(formatter)));
+					// LED on
+					lib.gpiod_line_set_value(line, 1);
 				} else {
 					System.out.println(String.format("No motion       %s", date.format(formatter)));
+					// LED off
+					lib.gpiod_line_set_value(line, 0);
 				}
 			}
 			return rc;
@@ -59,9 +76,13 @@ public class Hcsr501 {
 		System.out.println("HC-SR501 motion detector, timeout in 30 seconds\n");
 		// Blocking poll until timeout, note gpiod_simple_event_poll_cb is passed as a
 		// NULL
-		if (lib.gpiod_ctxless_event_loop(chipNum, lineNum, (byte) 0, consumer,
-				new timespec(new NativeLong(10), new NativeLong(0)), null, func, null) != 0) {
+		if (lib.gpiod_ctxless_event_loop(chipName, hcsr501LineNum, (byte) 0, consumer,
+				new timespec(new NativeLong(30), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
+		// LED off
+		lib.gpiod_line_set_value(line, 0);
+		lib.gpiod_line_release(line);
+		lib.gpiod_chip_close(chip);
 	}
 }
