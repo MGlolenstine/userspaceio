@@ -7,8 +7,8 @@
 
 # Git repo
 libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
-# Branch (master currently requires >= 5.5.0 kernel)
-branch="1.4.x"
+# Branch (master currently required >= 5.5.0 kernel)
+branch="v1.4.x"
 
 # Get current directory
 curdir=$PWD
