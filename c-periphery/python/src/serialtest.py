@@ -8,13 +8,17 @@ Serial loop back test
 
 Send C byte array to serial device and read back results.
 
+Find device:
+
+dmesg | grep tty
+
 Install socat:
 
 sudo apt-get install socat
 
 Run in another terminal:
 
-sudo socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11
+sudo socat PTY,link=/dev/ttyS1 PTY,link=/dev/ttyS11
 """
 
 from argparse import *
@@ -50,7 +54,7 @@ class serialtest:
         
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--device", help="Serial device name (default '/dev/ttyS10')", type=str, default="/dev/ttyS10")
+    parser.add_argument("--device", help="Serial device name (default '/dev/ttyS1')", type=str, default="/dev/ttyS1")
     parser.add_argument("--baudRate", help="Baud rate (default 115200)", type=int, default=115200)
     args = parser.parse_args()    
     obj = serialtest()
