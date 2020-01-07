@@ -13,7 +13,7 @@ import sys, time
 from argparse import *
 from cffi import FFI
 from libperiphery import libperipheryi2c
-import gpiod
+import gpiod import gpiod
 
 
 class adxl345:
@@ -22,7 +22,7 @@ class adxl345:
         """Create library interface.
         """    
         self.i2c = libperipheryi2c.libperipheryi2c()
-        self.gpiod = libgpiod.libgpiod()
+        self.gpiod = gpiod.gpiod()
         self.lib = self.gpiod.lib
         self.ffi = self.gpiod.ffi        
             
