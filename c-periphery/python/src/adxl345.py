@@ -13,7 +13,7 @@ import sys, time
 from argparse import *
 from cffi import FFI
 from libperiphery import libperipheryi2c
-from libgpiod import libgpiod
+from gpiod import gpiod
 
 
 class adxl345:
