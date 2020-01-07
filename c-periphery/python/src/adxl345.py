@@ -122,11 +122,11 @@ class adxl345:
                             if stable:
                                 print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
                                 # LED off
-                                self.lib.gpiod_line_set_value(gpiod_line, 1)
+                                self.lib.gpiod_line_set_value(gpiod_line, 0)
                             else:
                                 print("Not stable before timeout")
                                 # LED on
-                                self.lib.gpiod_line_set_value(gpiod_line, 0)
+                                self.lib.gpiod_line_set_value(gpiod_line, 1)
                             count += 1
                     else:
                         print("Not ADXL345?")
