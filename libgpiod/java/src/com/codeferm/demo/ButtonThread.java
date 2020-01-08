@@ -80,12 +80,12 @@ public class ButtonThread {
 	}
 
 	public static void main(String args[]) throws InterruptedException {
-		int chipNum = 1;
+		String device = "/dev/gpiochip1";
 		int lineNum = 3;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipNum = Integer.parseInt(args[0]);
+			// GPIO device (default "/dev/gpiochip1")
+			device = args[0];
 			// GPIO line number (default 3 button on NanoPi Duo)
 			lineNum = Integer.parseInt(args[1]);
 		}
@@ -93,7 +93,7 @@ public class ButtonThread {
 		final String consumer = ButtonThread.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_number(chipNum);
+		final gpiod_chip chip = lib.gpiod_chip_open(device);
 		// Verify the chip was opened
 		if (chip != null) {
 			final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
@@ -136,7 +136,7 @@ public class ButtonThread {
 			// See https://github.com/sgjava/userspaceio/issues/5
 			//lib.gpiod_chip_close(chip);
 		} else {
-			System.out.println(String.format("Unable to open chip %d", chipNum));
+			System.out.println(String.format("Unable to open chip %d", device));
 		}
 	}
 }
