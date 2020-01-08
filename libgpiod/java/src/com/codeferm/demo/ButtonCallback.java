@@ -39,7 +39,7 @@ public class ButtonCallback {
 		final String consumer = ButtonCallback.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_name(chipName);
+		final gpiod_chip chip = lib.gpiod_chip_open(chipName);
 		final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
 		final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();
 		// Empty event queue
