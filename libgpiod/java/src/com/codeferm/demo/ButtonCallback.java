@@ -1,4 +1,5 @@
 package com.codeferm.demo;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,6 +10,8 @@ import com.sun.jna.Pointer;
 
 import gpiod.GpiodLibrary;
 import gpiod.gpiod_chip;
+import gpiod.gpiod_line;
+import gpiod.gpiod_line_event;
 import gpiod.timespec;
 
 /**
@@ -17,19 +20,18 @@ import gpiod.timespec;
  * Should work on any board with a button built in. Just change chip and line
  * value as needed.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class ButtonCallback {
 
 	public static void main(String args[]) throws InterruptedException {
-		String chipNum = "/dev/gpiochip1";
+		String chipName = "/dev/gpiochip1";
 		int lineNum = 3;
 		// See if there are args to parse
 		if (args.length > 0) {
 			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipNum = args[0];
+			chipName = args[0];
 			// GPIO line number (default 3 button on NanoPi Duo)
 			lineNum = Integer.parseInt(args[1]);
 		}
@@ -37,7 +39,13 @@ public class ButtonCallback {
 		final String consumer = ButtonCallback.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_name(chipNum);
+		final gpiod_chip chip = lib.gpiod_chip_open_by_name(chipName);
+		final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
+		final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();
+		// Empty event queue
+		lib.gpiod_line_event_read(line, event);
+		lib.gpiod_line_release(line);
+		lib.gpiod_chip_close(chip);
 		// Timestamp formatter
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		// Use lambda for callback
@@ -49,8 +57,8 @@ public class ButtonCallback {
 				System.out.println("Timed out");
 			} else {
 				rc = GpiodLibrary.GPIOD_CTXLESS_EVENT_CB_RET_OK;
-				final LocalDateTime date = LocalDateTime.ofInstant(
-						Instant.ofEpochMilli(timeSpec.tv_sec.longValue() * 1000), ZoneId.systemDefault());
+				final LocalDateTime date = LocalDateTime
+						.ofInstant(Instant.ofEpochMilli(timeSpec.tv_sec.longValue() * 1000), ZoneId.systemDefault());
 				if (evtype == GpiodLibrary.GPIOD_CTXLESS_EVENT_CB_RISING_EDGE) {
 					System.out.println(String.format("Rising  edge timestamp %s", date.format(formatter)));
 				} else {
@@ -62,10 +70,9 @@ public class ButtonCallback {
 		System.out.println("Press and release button, timeout in 10 seconds\n");
 		// Blocking poll until timeout, note gpiod_simple_event_poll_cb is passed as a
 		// NULL
-		if (lib.gpiod_ctxless_event_loop(chipNum, lineNum, (byte) 0, consumer,
+		if (lib.gpiod_ctxless_event_loop(chipName, lineNum, (byte) 0, consumer,
 				new timespec(new NativeLong(10), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
-		lib.gpiod_chip_close(chip);
 	}
 }
