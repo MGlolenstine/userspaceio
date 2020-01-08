@@ -9,9 +9,6 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import gpiod.GpiodLibrary;
-import gpiod.gpiod_chip;
-import gpiod.gpiod_line;
-import gpiod.gpiod_line_event;
 import gpiod.timespec;
 
 /**
@@ -26,12 +23,12 @@ import gpiod.timespec;
 public class ButtonCallback {
 
 	public static void main(String args[]) throws InterruptedException {
-		String chipName = "/dev/gpiochip1";
+		String device = "/dev/gpiochip1";
 		int lineNum = 3;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipName = args[0];
+			// GPIO device (default "/dev/gpiochip1")
+			device = args[0];
 			// GPIO line number (default 3 button on NanoPi Duo)
 			lineNum = Integer.parseInt(args[1]);
 		}
@@ -63,7 +60,7 @@ public class ButtonCallback {
 		System.out.println("Press and release button, timeout in 10 seconds\n");
 		// Blocking poll until timeout, note gpiod_simple_event_poll_cb is passed as a
 		// NULL
-		if (lib.gpiod_ctxless_event_loop(chipName, lineNum, (byte) 0, consumer,
+		if (lib.gpiod_ctxless_event_loop(device, lineNum, (byte) 0, consumer,
 				new timespec(new NativeLong(10), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
