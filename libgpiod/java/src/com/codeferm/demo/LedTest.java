@@ -41,13 +41,18 @@ public class LedTest {
 			final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
 			// Verify we have line
 			if (line != null) {
-				// This will set line for output and set initial value (LED on)
-				if (lib.gpiod_line_request_output(line, consumer, 1) == 0) {
-					System.out.println("\nLED on");
-					TimeUnit.SECONDS.sleep(3);
-					// LED off
-					lib.gpiod_line_set_value(line, 0);
-					System.out.println("LED off");
+				// This will set line for output and set initial value (LED off)
+				if (lib.gpiod_line_request_output(line, consumer, 0) == 0) {
+					for (int i = 0; i < 10; i++) {
+						// LED on
+						System.out.println("\nLED on");
+						lib.gpiod_line_set_value(line, 1);
+						TimeUnit.SECONDS.sleep(1);
+						// LED off
+						lib.gpiod_line_set_value(line, 0);
+						System.out.println("LED off");
+						TimeUnit.SECONDS.sleep(1);
+					}
 				} else {
 					System.out.println(String.format("Unable to set line %d to output", lineNum));
 				}
