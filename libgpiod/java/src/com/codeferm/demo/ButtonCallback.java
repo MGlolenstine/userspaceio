@@ -8,6 +8,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import gpiod.GpiodLibrary;
+import gpiod.gpiod_chip;
 import gpiod.timespec;
 
 /**
@@ -36,6 +37,7 @@ public class ButtonCallback {
 		final String consumer = ButtonCallback.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
+		final gpiod_chip chip = lib.gpiod_chip_open_by_name(chipNum);
 		// Timestamp formatter
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		// Use lambda for callback
@@ -64,5 +66,6 @@ public class ButtonCallback {
 				new timespec(new NativeLong(10), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
+		lib.gpiod_chip_close(chip);
 	}
 }
