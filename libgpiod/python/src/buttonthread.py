@@ -24,6 +24,8 @@ class buttonthread:
         print("Thread start")
         button_line = self.chip.get_line(line)
         button_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
+        # Throw away first event (rising edge on Duo)
+        button_line.event_read()
         while button_line.event_wait(sec=timeoutSecs):
             event = button_line.event_read()
             if event.type == gpiod.LineEvent.RISING_EDGE:
