@@ -43,8 +43,6 @@ public class ButtonWait {
 				// Request falling edge events
 				if (lib.gpiod_line_request_falling_edge_events(line, consumer) == 0) {
 					System.out.println("Press button within 5 seconds");
-					// Empty queue
-					lib.gpiod_line_event_read(line, event);
 					final int rc = lib.gpiod_line_event_wait(line, new timespec(new NativeLong(5), new NativeLong(0)));
 					if (rc == 0) {
 						System.out.println("Timed out");
