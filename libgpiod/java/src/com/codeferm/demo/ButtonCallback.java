@@ -44,8 +44,6 @@ public class ButtonCallback {
 		final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();
 		// Empty event queue
 		lib.gpiod_line_event_read(line, event);
-		lib.gpiod_line_release(line);
-		lib.gpiod_chip_close(chip);
 		// Timestamp formatter
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		// Use lambda for callback
@@ -74,5 +72,7 @@ public class ButtonCallback {
 				new timespec(new NativeLong(10), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
+		lib.gpiod_line_release(line);
+		lib.gpiod_chip_close(chip);
 	}
 }
