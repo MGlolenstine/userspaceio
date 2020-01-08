@@ -134,7 +134,7 @@ public class ButtonThread {
 				System.out.println(String.format("Unable to get line %d", lineNum));
 			}
 			// See https://github.com/sgjava/userspaceio/issues/5
-			lib.gpiod_chip_close(chip);
+			//lib.gpiod_chip_close(chip);
 		} else {
 			System.out.println(String.format("Unable to open chip %d", device));
 		}
