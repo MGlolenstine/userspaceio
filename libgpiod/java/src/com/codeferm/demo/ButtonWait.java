@@ -37,17 +37,19 @@ public class ButtonWait {
 		// Verify the chip was opened
 		if (chip != null) {
 			final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
+			final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();			
 			// Verify we have line
 			if (line != null) {
 				// Request falling edge events
 				if (lib.gpiod_line_request_falling_edge_events(line, consumer) == 0) {
 					System.out.println("Press button within 5 seconds");
+					// Empty queue
+					lib.gpiod_line_event_read(line, event);
 					final int rc = lib.gpiod_line_event_wait(line, new timespec(new NativeLong(5), new NativeLong(0)));
 					if (rc == 0) {
 						System.out.println("Timed out");
 					} else if (rc == 1) {
 						System.out.println("Event happened");
-						final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();
 						// Read event off queue
 						lib.gpiod_line_event_read(line, event);
 						System.out.println(event.event_type);
