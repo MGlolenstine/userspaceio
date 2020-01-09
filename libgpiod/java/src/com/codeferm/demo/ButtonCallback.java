@@ -12,9 +12,9 @@ import gpiod.GpiodLibrary;
 import gpiod.timespec;
 
 /**
- * Use libgpiod context less event loop to implement blocking callback.
+ * Use libgpiod contextless event loop to implement blocking callback.
  * 
- * Should work on any board with a button built in. Just change chip and line
+ * Should work on any board with a button built in. Just change device and line
  * value as needed.
  * 
  * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.

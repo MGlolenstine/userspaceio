@@ -15,7 +15,7 @@ import gpiod.timespec;
 
 /**
  * HC-SR501 sensor example using contextless event loop to implement blocking
- * callback. This uses two GPIO chips for the Duo.
+ * callback. This uses two GPIO devices for the Duo.
  * 
  * Monitor rising edge (motion detected) and falling edge (no motion). If LED is
  * wired up then motion detection lights LED.

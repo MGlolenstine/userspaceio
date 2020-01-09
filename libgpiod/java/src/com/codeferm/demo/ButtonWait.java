@@ -11,7 +11,7 @@ import gpiod.timespec;
 /**
  * Test blocking event using built in button.
  * 
- * Should work on any board with a button built in. Just change chip and line
+ * Should work on any board with a button built in. Just change device and line
  * value as needed.
  * 
  * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.

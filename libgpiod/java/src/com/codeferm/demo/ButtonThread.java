@@ -18,7 +18,7 @@ import gpiod.timespec;
 /**
  * Use a thread to monitor edge events in background.
  * 
- * Should work on any board with a button built in. Just change chip and line
+ * Should work on any board with a button built in. Just change device and line
  * value as needed.
  * 
  * Copyright (c) 2018 Steven P. Goldsmith
