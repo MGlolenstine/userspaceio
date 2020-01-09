@@ -35,6 +35,7 @@ class buttonpress:
         if led:
             led_line = self.chip_led.get_line(led)
             led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
+            led_line.set_value(0)
         else:
             led_line = None
         # Throw away first event (rising edge on Duo)
@@ -54,7 +55,6 @@ class buttonpress:
                     led_line.set_value(0)
                 else:
                     led_line.set_value(1)
-
 
 if __name__ == "__main__":
     parser = ArgumentParser()
