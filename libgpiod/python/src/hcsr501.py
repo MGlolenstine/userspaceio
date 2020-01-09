@@ -36,6 +36,8 @@ class hcsr501:
             led_line.set_value(0)
         else:
             led_line = None
+        # Throw away first event (rising edge on Duo)
+        sensor_line.event_read()
         print("Program will exit after 60 seconds of no activity\n")
         while sensor_line.event_wait(sec=60):
             event = sensor_line.event_read()
