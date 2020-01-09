@@ -1,4 +1,5 @@
 package com.codeferm.demo;
+
 import com.sun.jna.NativeLong;
 
 import gpiod.GpiodLibrary;
@@ -13,19 +14,18 @@ import gpiod.timespec;
  * Should work on any board with a button built in. Just change chip and line
  * value as needed.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class ButtonWait {
 
 	public static void main(String args[]) throws InterruptedException {
-		int chipNum = 1;
+		String device = "/dev/gpiochip1";
 		int lineNum = 3;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip number (default 1 '/dev/gpiochip1')
-			chipNum = Integer.parseInt(args[0]);
+			// GPIO device (default "/dev/gpiochip1")
+			device = args[0];
 			// GPIO line number (default 3 button on NanoPi Duo)
 			lineNum = Integer.parseInt(args[1]);
 		}
@@ -33,11 +33,11 @@ public class ButtonWait {
 		final String consumer = ButtonWait.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_number(chipNum);
+		final gpiod_chip chip = lib.gpiod_chip_open(device);
 		// Verify the chip was opened
 		if (chip != null) {
 			final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
-			final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();			
+			final gpiod_line_event.ByValue event = new gpiod_line_event.ByValue();
 			// Verify we have line
 			if (line != null) {
 				// Request falling edge events
@@ -63,7 +63,7 @@ public class ButtonWait {
 			}
 			lib.gpiod_chip_close(chip);
 		} else {
-			System.out.println(String.format("Unable to open chip %d", chipNum));
+			System.out.println(String.format("Unable to open chip %d", device));
 		}
 	}
 }
