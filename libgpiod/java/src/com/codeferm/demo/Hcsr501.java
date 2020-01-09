@@ -15,7 +15,7 @@ import gpiod.timespec;
 
 /**
  * HC-SR501 sensor example using contextless event loop to implement blocking
- * callback.
+ * callback. This uses two GPIO chips for the Duo.
  * 
  * Monitor rising edge (motion detected) and falling edge (no motion). If LED is
  * wired up then motion detection lights LED.
@@ -26,18 +26,18 @@ import gpiod.timespec;
 public class Hcsr501 {
 
 	public static void main(String args[]) throws InterruptedException {
-		String chipName = "/dev/gpiochip1";
+		String device0 = "/dev/gpiochip0";
+		String device1 = "/dev/gpiochip1";
 		int hcsr501LineNum = 11;
-		int chipNum = 0;
 		int ledLineNum = 203;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip name (default '/dev/gpiochip1')
-			chipName = args[0];
+			// GPIO device (default "/dev/gpiochip1")
+			device1 = args[0];
 			// GPIO line number (default 11 IRRX on NanoPi Duo)
 			hcsr501LineNum = Integer.parseInt(args[1]);
-			// GPIO chip number (default 0 '/dev/gpiochip0')
-			chipNum = Integer.parseInt(args[2]);
+			// GPIO device (default "/dev/gpiochip0")
+			device0 = args[2];
 			// GPIO line number (default 203 IOG11 on NanoPi Duo)
 			ledLineNum = Integer.parseInt(args[3]);
 		}
@@ -45,7 +45,7 @@ public class Hcsr501 {
 		final String consumer = Hcsr501.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_number(chipNum);
+		final gpiod_chip chip = lib.gpiod_chip_open(device0);
 		gpiod_line line = lib.gpiod_chip_get_line(chip, ledLineNum);
 		lib.gpiod_line_request_output(line, consumer, 0);
 		// Timestamp formatter
@@ -76,7 +76,7 @@ public class Hcsr501 {
 		System.out.println("HC-SR501 motion detector, timeout in 30 seconds\n");
 		// Blocking poll until timeout, note gpiod_simple_event_poll_cb is passed as a
 		// NULL
-		if (lib.gpiod_ctxless_event_loop(chipName, hcsr501LineNum, (byte) 0, consumer,
+		if (lib.gpiod_ctxless_event_loop(device1, hcsr501LineNum, (byte) 0, consumer,
 				new timespec(new NativeLong(30), new NativeLong(0)), null, func, null) != 0) {
 			System.out.println("gpiod_simple_event_loop error, check chip and line values");
 		}
