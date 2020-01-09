@@ -51,16 +51,16 @@ class buttonpress:
             # If led arg passed then turn on and off based on event type
             if led_line:
                 if event.type == gpiod.LineEvent.RISING_EDGE:
-                    led_line.set_value(1)
-                else:
                     led_line.set_value(0)
+                else:
+                    led_line.set_value(1)
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--chip_button", help="GPIO chip name (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
+    parser.add_argument("--chip_button", help="GPIO device (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
     parser.add_argument("--button", help="GPIO line number (default 3 button on NanoPi Duo)", type=int, default=3)
-    parser.add_argument("--chip_led", help="GPIO chip name (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
+    parser.add_argument("--chip_led", help="GPIO device (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
     parser.add_argument("--led", help="GPIO line number", type=int)
     args = parser.parse_args()
     obj = buttonpress(args.chip_button, args.chip_led)
