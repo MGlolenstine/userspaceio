@@ -41,6 +41,9 @@ else
 		java -jar ../../jnaerator/jnaerator.jar -library peripheryserial -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryserial.so /usr/include/linux/spi/spidev.h ../../../c-periphery/src/serial.h >> $logfile 2>&1
 		java -jar ../../jnaerator/jnaerator.jar -library peripheryspi -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryspi.so ../../../c-periphery/src/spi.h >> $logfile 2>&1
 		java -jar ../../jnaerator/jnaerator.jar -library peripherymmio -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipherymmio.so ../../../c-periphery/src/mmio.h >> $logfile 2>&1
+		java -jar ../../jnaerator/jnaerator.jar -library peripheryled -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryled.so ../../../c-periphery/src/led.h >> $logfile 2>&1
+		java -jar ../../jnaerator/jnaerator.jar -library peripherypwm -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipherypwm.so ../../../c-periphery/src/pwm.h >> $logfile 2>&1
+		java -jar ../../jnaerator/jnaerator.jar -library peripheryversion -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryversion.so ../../../c-periphery/src/version.h >> $logfile 2>&1
 
 		# Patch getFieldOrder(), see https://github.com/nativelibs4java/JNAerator/pull/111/commits/a2b0ae821369d6efed896627dccc1fa1f9677556
 		log "Patching generated source"
@@ -56,10 +59,10 @@ else
 		# Compile library
 		log "Compile library"
 		cd ../ >> $logfile 2>&1
-		javac -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java peripherymmio/*.java >> $logfile 2>&1
+		javac -cp ../../jnaerator/jna-5.5.0.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java peripherymmio/*.java peripheryled/*.java peripherypwm/*.java peripheryversion/*.java >> $logfile 2>&1
 
 		# Create package
-		/usr/lib/jvm/jdk1.8.0/bin/jar cf libperiphery.jar peripheryi2c/*.* peripheryserial/*.* peripheryspi/*.* peripherymmio/*.* >> $logfile 2>&1
+		/usr/lib/jvm/jdk1.8.0/bin/jar cf libperiphery.jar peripheryi2c/*.* peripheryserial/*.* peripheryspi/*.* peripherymmio/*.* peripheryled/*.* peripherypwm/*.* peripheryversion/*.* >> $logfile 2>&1
 	fi
 fi
 
