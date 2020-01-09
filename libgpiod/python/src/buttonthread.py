@@ -18,7 +18,7 @@ class buttonthread:
     def __init__(self, chip):
         """Initialize GPIO chip.
         """         
-        self.chip = gpiod.Chip(chip, gpiod.Chip.OPEN_BY_NUMBER)
+        self.chip = gpiod.Chip(chip, gpiod.Chip.OPEN_BY_PATH)
 
     def wait_for_edge(self, line, timeoutSecs):
         print("Thread start")
@@ -57,7 +57,7 @@ class buttonthread:
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--chip", help="GPIO chip number (default 1 '/dev/gpiochip1')", type=str, default="1")
+    parser.add_argument("--chip", help="GPIO device (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
     parser.add_argument("--line", help="GPIO line number (default 3 button on NanoPi Duo)", type=int, default=3)
     args = parser.parse_args()
     obj = buttonthread(args.chip)
