@@ -1,9 +1,9 @@
 package com.codeferm.demo;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -14,13 +14,13 @@ import gpiod.gpiod_line;
 import gpiod.timespec;
 
 /**
- * HC-SR501 sensor example using contextless event loop to implement blocking callback.
+ * HC-SR501 sensor example using contextless event loop to implement blocking
+ * callback.
  * 
- * Monitor rising edge (motion detected) and falling edge (no motion).
- * If LED is wired up then motion detection lights LED.
+ * Monitor rising edge (motion detected) and falling edge (no motion). If LED is
+ * wired up then motion detection lights LED.
  * 
- * Copyright (c) 2018 Steven P. Goldsmith
- * See LICENSE.md for details.
+ * Copyright (c) 2018 Steven P. Goldsmith See LICENSE.md for details.
  */
 
 public class Hcsr501 {
@@ -59,8 +59,8 @@ public class Hcsr501 {
 				System.out.println("Timed out");
 			} else {
 				rc = GpiodLibrary.GPIOD_CTXLESS_EVENT_CB_RET_OK;
-				final LocalDateTime date = LocalDateTime.ofInstant(
-						Instant.ofEpochMilli(timeSpec.tv_sec.longValue() * 1000), ZoneId.systemDefault());
+				final LocalDateTime date = LocalDateTime
+						.ofInstant(Instant.ofEpochMilli(timeSpec.tv_sec.longValue() * 1000), ZoneId.systemDefault());
 				if (evtype == GpiodLibrary.GPIOD_CTXLESS_EVENT_CB_RISING_EDGE) {
 					System.out.println(String.format("Motion detected %s", date.format(formatter)));
 					// LED on
