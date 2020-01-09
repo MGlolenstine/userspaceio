@@ -19,12 +19,12 @@ import gpiod.gpiod_line;
 public class LedTest {
 
 	public static void main(String args[]) throws InterruptedException {
-		int chipNum = 0;
+		String device = "/dev/gpiochip0";
 		int lineNum = 203;
 		// See if there are args to parse
 		if (args.length > 0) {
-			// GPIO chip number (default 0 '/dev/gpiochip0')
-			chipNum = Integer.parseInt(args[0]);
+			// GPIO device (default "/dev/gpiochip0")
+			device = args[0];
 			// GPIO line number (default 203 IOG11 on NanoPi Duo)
 			lineNum = Integer.parseInt(args[1]);
 		}
@@ -35,7 +35,7 @@ public class LedTest {
 		final String consumer = LedTest.class.getSimpleName();
 		// Load library
 		final GpiodLibrary lib = GpiodLibrary.INSTANCE;
-		final gpiod_chip chip = lib.gpiod_chip_open_by_number(chipNum);
+		final gpiod_chip chip = lib.gpiod_chip_open(device);
 		// Verify the chip was opened
 		if (chip != null) {
 			final gpiod_line line = lib.gpiod_chip_get_line(chip, lineNum);
@@ -62,7 +62,7 @@ public class LedTest {
 			}
 			lib.gpiod_chip_close(chip);
 		} else {
-			System.out.println(String.format("Unable to open chip %d", chipNum));
+			System.out.println(String.format("Unable to open chip %d", device));
 		}
 	}
 }
