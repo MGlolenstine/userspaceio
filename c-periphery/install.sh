@@ -35,6 +35,9 @@ if [ ! -d "$curdir/../../c-periphery" ]; then
 	ld -shared obj/spi.o -o libperipheryspi.so >> $logfile 2>&1
 	ld -shared obj/serial.o -o libperipheryserial.so >> $logfile 2>&1
 	ld -shared obj/mmio.o -o libperipherymmio.so >> $logfile 2>&1
+	ld -shared obj/led.o -o libperipheryled.so >> $logfile 2>&1
+	ld -shared obj/pwm.o -o libperipherypwm.so >> $logfile 2>&1
+	ld -shared obj/version.o -o libperipheryversion.so >> $logfile 2>&1
 	# Deploy shared libraries
 	sudo cp *.so /usr/local/lib/. >> $logfile 2>&1
 fi
