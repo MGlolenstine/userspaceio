@@ -33,6 +33,7 @@ class hcsr501:
         if led:
             led_line = self.chip_led.get_line(led)
             led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
+            led_line.set_value(0)
         else:
             led_line = None
         print("Program will exit after 60 seconds of no activity\n")
@@ -47,9 +48,9 @@ class hcsr501:
             # If led arg passed then turn on and off based on event type
             if led_line:
                 if event.type == gpiod.LineEvent.RISING_EDGE:
-                    led_line.set_value(0)
+                    led_line.set_value(1)
                 else:
-                    led_line.set_value(1)            
+                    led_line.set_value(0)            
         print("Timeout exit")
 
 
