@@ -15,17 +15,9 @@ public class KernelLed {
 		// Load JNA library
 		final PeripheryledLibrary lib = PeripheryledLibrary.INSTANCE;
 		final PointerByReference handle = lib.led_new();
-		lib.led_open(handle, "nanopi:green:pwr");
-		for (int i = 0; i < 10; i++) {
-			// LED on
-			System.out.println("\nLED on");
-			lib.led_set_brightness(handle, 1);
-			TimeUnit.SECONDS.sleep(1);
-			// LED off
-			lib.led_set_brightness(handle, 0);
-			System.out.println("LED off");
-			TimeUnit.SECONDS.sleep(1);
-		}
+		int rc = lib.led_open(handle, "nanopi\\:green\\:pwr");
+		System.out.println(rc);
 		lib.led_close(handle);
+		lib.led_free(handle);
 	}
 }
