@@ -19,13 +19,14 @@ public class KernelLed {
 		for (int i = 0; i < 10; i++) {
 			// LED on
 			System.out.println("\nLED on");
-			lib.led_set_brightness(handle, 1);
+			lib.led_write(handle, (byte) 1);
 			TimeUnit.SECONDS.sleep(1);
 			// LED off
-			lib.led_set_brightness(handle, 0);
+			lib.led_write(handle, (byte) 0);
 			System.out.println("LED off");
 			TimeUnit.SECONDS.sleep(1);
 		}
 		lib.led_close(handle);
+		lib.led_free(handle);
 	}
 }
