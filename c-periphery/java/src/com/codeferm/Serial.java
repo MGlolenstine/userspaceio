@@ -47,8 +47,7 @@ public class Serial {
 	public void close(final PointerByReference handle) {
 		if (lib.serial_close(handle) < 0) {
 			throw new RuntimeException(lib.serial_errmsg(handle));
-		} else {
-			lib.serial_free(handle);
 		}
+		lib.serial_free(handle);
 	}
 }

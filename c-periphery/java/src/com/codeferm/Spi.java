@@ -51,9 +51,8 @@ public class Spi {
 	public void close(final PointerByReference handle) {
 		if (lib.spi_close(handle) < 0) {
 			throw new RuntimeException(lib.spi_errmsg(handle));
-		} else {
-			lib.spi_free(handle);
 		}
+		lib.spi_free(handle);
 	}
 
 	/**

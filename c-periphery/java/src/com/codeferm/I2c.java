@@ -59,9 +59,8 @@ public class I2c {
 	public void close(final PointerByReference handle) {
 		if (lib.i2c_close(handle) < 0) {
 			throw new RuntimeException(lib.i2c_errmsg(handle));
-		} else {
-			lib.i2c_free(handle);
 		}
+		lib.i2c_free(handle);
 	}
 
 	/**
