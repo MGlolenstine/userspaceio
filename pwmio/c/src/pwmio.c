@@ -1,5 +1,5 @@
 /**
- * Simple hardware PWM using /sys/class/pwm/pwmchip*
+ * Simple PWM subsystem access using /sys/class/pwm/pwmchip*
  *
  * Should work on any board with hardware PWM pin mapped to
  * /sys/class/pwm/pwmchip*. Use armbian-config and set pwm in Hardware
