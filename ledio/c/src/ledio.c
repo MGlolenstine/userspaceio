@@ -24,8 +24,7 @@ int led_set_brightness(const char *device, int brightness) {
 	int handle, rc;
 
 	sprintf(file_name, "/sys/class/leds/%s/brightness", device);
-	sprintf(value, "%d", brightness);
-	printf("value = %s\n", value);
+	sprintf(value, "%d\n", brightness);
 	handle = open(file_name, O_WRONLY);
 	rc = write(handle, value, sizeof(value));
 	close(handle);
