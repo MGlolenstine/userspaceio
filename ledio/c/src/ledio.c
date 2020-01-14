@@ -21,12 +21,12 @@
 int led_set_brightness(const char *device, int brightness) {
 	char value[16];
 	char file_name[PATH_MAX];
-	int handle, rc;
+	int handle, rc, len;
 
 	sprintf(file_name, "/sys/class/leds/%s/brightness", device);
-	sprintf(value, "%d\n", brightness);
+	len = sprintf(value, "%d\n", brightness);
 	handle = open(file_name, O_WRONLY);
-	rc = write(handle, value, sizeof(value));
+	rc = write(handle, value, len);
 	close(handle);
 	return rc;
 }
