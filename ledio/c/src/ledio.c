@@ -34,7 +34,7 @@ int led_set_brightness(const char *device, int brightness) {
 int led_get_brightness(const char *device) {
 	char value[16];
 	char file_name[PATH_MAX];
-	int handle, rc;
+	int handle, ret, rc;
 
 	sprintf(file_name, "/sys/class/leds/%s/brightness", device);
 	handle = open(file_name, O_RDONLY);
@@ -42,5 +42,6 @@ int led_get_brightness(const char *device) {
 	close(handle);
     /* Null-terminate over newline */
 	value[rc] = '\0';
-	return atoi(value);
+	ret = atoi(value);
+	return ret;
 }
