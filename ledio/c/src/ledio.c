@@ -38,7 +38,7 @@ int led_get_brightness(const char *device) {
 
 	sprintf(file_name, "/sys/class/leds/%s/brightness", device);
 	handle = open(file_name, O_RDONLY);
-	rc = read(file_name, value, sizeof(value));
+	rc = read(handle, value, sizeof(value));
 	close(handle);
     /* Null-terminate over newline */
 	value[rc] = '\0';
