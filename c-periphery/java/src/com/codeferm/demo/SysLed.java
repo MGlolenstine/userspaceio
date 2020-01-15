@@ -14,7 +14,7 @@ import peripheryled.PeripheryledLibrary;
  * Copyright (c) 2020 Steven P. Goldsmith See LICENSE.md for details.
  */
 
-public class KernelLed {
+public class SysLed {
 
 	public static void main(String args[]) throws InterruptedException {
 		// Load JNA library
@@ -33,6 +33,8 @@ public class KernelLed {
 			System.out.println("LED off");
 			TimeUnit.SECONDS.sleep(1);
 		}
+		// This is a power light so leave on
+		lib.led_set_brightness(handle, 1);
 		lib.led_close(handle);
 		lib.led_free(handle);
 	}
