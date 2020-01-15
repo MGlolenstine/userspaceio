@@ -22,7 +22,7 @@ public class KernelLed {
 		final PointerByReference handle = lib.led_new();
 		int rc = lib.led_open(handle, "nanopi:green:pwr");
 		// Turn on LED full brightness
-		lib.led_write(handle, (byte) 1);
+		lib.led_write(handle, (byte) 0);
 		for (int i = 0; i < 10; i++) {
 			// LED on
 			System.out.println("\nLED on");
