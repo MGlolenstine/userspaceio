@@ -11,11 +11,11 @@ int main(void) {
 
 	/* Flash onboard power LED */
 	for (i = 1; i < 10; i += 1) {
-		rc = led_set_brightness("nanopi\:green\:pwr", 1);
+		rc = led_set_brightness("nanopi:green:pwr", 1);
 		printf("Led on = %d\n", rc);
 		// Sleep for a second
 		usleep(1000000);
-		rc = led_set_brightness("nanopi\:green\:pwr", 0);
+		rc = led_set_brightness("nanopi:green:pwr", 0);
 		printf("Led off = %d\n", rc);
 		// Sleep for a second
 		usleep(1000000);
