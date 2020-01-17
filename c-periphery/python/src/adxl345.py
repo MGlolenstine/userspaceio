@@ -97,7 +97,7 @@ class adxl345:
         print ("libgpiod version %s" % gpiod.version_string())
         # Verify the chip was opened
         if self.chip != self.ffi.NULL:
-            print("Name: %s, label: %s, lines: %d" % (self.ffi.string(self.chip.name).decode('utf-8'), self.ffi.string(self.chip.label).decode('utf-8'), self.chip.num_lines))
+            print("Name: %s, label: %s, lines: %d" % self.chip.name(), self.chip.label, self.chip.num_lines)
             line = self.chip.chip_get_line(self.chip, line)
             # Verify we have line
             if line != self.ffi.NULL:
