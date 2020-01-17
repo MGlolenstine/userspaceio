@@ -98,7 +98,7 @@ class adxl345:
         # Verify the chip was opened
         if self.chip != self.ffi.NULL:
             print("Name: %s, label: %s, lines: %u" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
-            line = self.chip.chip_get_line(self.chip, line)
+            line = self.chip.get_line(self.chip, line)
             # Verify we have line
             if line != self.ffi.NULL:
                 consumer = sys.argv[0][:-3]
@@ -136,7 +136,7 @@ class adxl345:
                 gpiod.line_release(line)
             else:
                 print("Unable to get line %d" % line)
-            self.chip.chip_close(self.chip)    
+            self.chip.close(self.chip)    
         else:
             print("Unable to open chip %d" % chip)
                     
