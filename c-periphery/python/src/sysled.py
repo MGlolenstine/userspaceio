@@ -9,6 +9,7 @@ LED test
 Access Linux userspace sysfs LEDs.
 """
 
+import time
 from argparse import *
 from cffi import FFI
 from libperiphery import libperipheryled
