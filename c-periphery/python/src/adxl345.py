@@ -94,7 +94,7 @@ class adxl345:
         return count < maxReads, (curX, curY, curZ)        
 
     def main(self, device, address, line):
-        print ("libgpiod version %s" % self.ffi.string(gpiod.version_string()).decode('utf-8'))
+        print ("libgpiod version %s" % gpiod.version_string().decode('utf-8'))
         # Verify the chip was opened
         if self.chip != self.ffi.NULL:
             print("Name: %s, label: %s, lines: %d" % (self.ffi.string(self.chip.name).decode('utf-8'), self.ffi.string(self.chip.label).decode('utf-8'), self.chip.num_lines))
