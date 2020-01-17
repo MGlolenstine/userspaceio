@@ -9,22 +9,19 @@ I'm using I2C to communicate with the ADXL345 although SPI is supported as
 well.
 """
 
-import sys, time
+import sys, time, gpiod
 from argparse import *
 from cffi import FFI
 from libperiphery import libperipheryi2c
-from gpiod import gpiod
 
 
 class adxl345:
     
-    def __init__(self):
+    def __init__(self, chip):
         """Create library interface.
         """    
         self.i2c = libperipheryi2c.libperipheryi2c()
-        self.gpiod = gpiod.gpiod()
-        self.lib = self.gpiod.lib
-        self.ffi = self.gpiod.ffi        
+        self.chip = gpiod.Chip(chip, gpiod.Chip.OPEN_BY_PATH)
             
     def getRange(self, handle, addr):
         """Retrieve the current range of the accelerometer. See setRange for
@@ -94,18 +91,17 @@ class adxl345:
             count += 1
         return count < maxReads, (curX, curY, curZ)        
 
-    def main(self, device, address, chip, line):
-        print ("libgpiod version %s" % self.ffi.string(self.lib.gpiod_version_string()).decode('utf-8'))
-        gpiod_chip = self.lib.gpiod_chip_open_by_number(chip)
+    def main(self, device, address, line):
+        print ("libgpiod version %s" % self.ffi.string(gpiod.gpiod_version_string()).decode('utf-8'))
         # Verify the chip was opened
-        if gpiod_chip != self.ffi.NULL:
-            print("Name: %s, label: %s, lines: %d" % (self.ffi.string(gpiod_chip.name).decode('utf-8'), self.ffi.string(gpiod_chip.label).decode('utf-8'), gpiod_chip.num_lines))
-            gpiod_line = self.lib.gpiod_chip_get_line(gpiod_chip, line)
+        if self.chip != self.ffi.NULL:
+            print("Name: %s, label: %s, lines: %d" % (self.ffi.string(self.chip.name).decode('utf-8'), self.ffi.string(self.chip.label).decode('utf-8'), self.chip.num_lines))
+            line = self.chip.chip_get_line(self.chip, line)
             # Verify we have line
-            if gpiod_line != self.ffi.NULL:
+            if line != self.ffi.NULL:
                 consumer = sys.argv[0][:-3]
                 # This will set line for output and set initial value (LED off)
-                if self.lib.gpiod_line_request_output(gpiod_line, consumer.encode('utf-8'), 1) == 0:
+                if gpiod.line_request_output(line, consumer.encode('utf-8'), 1) == 0:
                     handle = self.i2c.open(device)
                     # ADXL345 wired up on port 0x53?
                     if self.i2c.readReg(handle, address, 0x00) == 0xe5:
@@ -122,23 +118,23 @@ class adxl345:
                             if stable:
                                 print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
                                 # LED off
-                                self.lib.gpiod_line_set_value(gpiod_line, 0)
+                                gpiod.line_set_value(line, 0)
                             else:
                                 print("Not stable before timeout")
                                 # LED on
-                                self.lib.gpiod_line_set_value(gpiod_line, 1)
+                                gpiod.line_set_value(line, 1)
                             count += 1
                     else:
                         print("Not ADXL345?")
                     # LED off
-                    self.lib.gpiod_line_set_value(gpiod_line, 1)
+                    gpiod.line_set_value(line, 1)
                     self.i2c.close(handle)
                 else:
                     print("Unable to set line %d to output" % line)
-                self.lib.gpiod_line_release(gpiod_line)
+                gpiod.line_release(line)
             else:
                 print("Unable to get line %d" % line)
-            self.lib.gpiod_chip_close(gpiod_chip)    
+            self.chip.chip_close(self.chip)    
         else:
             print("Unable to open chip %d" % chip)
                     
@@ -147,10 +143,10 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--device", help="I2C device name (default '/dev/i2c-0')", type=str, default="/dev/i2c-0")
     parser.add_argument("--address", help="ADXL345 address (default 0x53)", type=str, default="0x53")
-    parser.add_argument("--chip", help="GPIO chip number (default 0 '/dev/gpiochip0')", type=int, default=0)
+    parser.add_argument("--chip", help="GPIO chip number (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
     parser.add_argument("--line", help="GPIO line number (default 203 IOG11 on NanoPi Duo)", type=int, default=203)
     args = parser.parse_args()
-    obj = adxl345()
+    obj = adxl345(args.chip)
     # Convert from hex string to int
     address = int(args.address, 16)
-    obj.main(args.device, address, args.chip, args.line)
+    obj.main(args.device, address, args.line)
