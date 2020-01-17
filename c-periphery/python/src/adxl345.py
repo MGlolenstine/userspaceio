@@ -102,30 +102,30 @@ class adxl345:
             # Verify we have line
             if line != self.ffi.NULL:
                 consumer = sys.argv[0][:-3]
-                # This will set line for output and set initial value (LED off)
-                if line.request(consumer=sys.argv[0][:-5], type=gpiod.LINE_REQ_DIR_OUT) == 0:
-                    handle = self.i2c.open(device)
-                    # ADXL345 wired up on port 0x53?
-                    if self.i2c.readReg(handle, address, 0x00) == 0xe5:
-                        # Enable the accelerometer
-                        self.i2c.writeReg(handle, address, 0x2d, 0x08)
-                        # +/- 2g
-                        self.setRange(handle, address, 0x00)
-                        # 100 Hz
-                        self.setDataRate(handle, address, 0x0a)
-                        print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
-                        count = 0
-                        while count < 100:
-                            stable, data = self.waitForStable(handle, address, 20, 2, 10, 0.05)                
-                            if stable:
-                                print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
-                                # LED off
-                                gpiod.line_set_value(line, 0)
-                            else:
-                                print("Not stable before timeout")
-                                # LED on
-                                gpiod.line_set_value(line, 1)
-                            count += 1
+                # This will set line for output)
+                line.request(consumer=sys.argv[0][:-5], type=gpiod.LINE_REQ_DIR_OUT)
+                handle = self.i2c.open(device)
+                # ADXL345 wired up on port 0x53?
+                if self.i2c.readReg(handle, address, 0x00) == 0xe5:
+                    # Enable the accelerometer
+                    self.i2c.writeReg(handle, address, 0x2d, 0x08)
+                    # +/- 2g
+                    self.setRange(handle, address, 0x00)
+                    # 100 Hz
+                    self.setDataRate(handle, address, 0x0a)
+                    print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
+                    count = 0
+                    while count < 100:
+                        stable, data = self.waitForStable(handle, address, 20, 2, 10, 0.05)                
+                        if stable:
+                            print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
+                            # LED off
+                            gpiod.line_set_value(line, 0)
+                        else:
+                            print("Not stable before timeout")
+                            # LED on
+                            gpiod.line_set_value(line, 1)
+                        count += 1
                     else:
                         print("Not ADXL345?")
                     # LED off
@@ -134,8 +134,6 @@ class adxl345:
                 else:
                     print("Unable to set line %d to output" % line)
                 gpiod.line_release(line)
-            else:
-                print("Unable to get line %d" % line)
             self.chip.close(self.chip)    
         else:
             print("Unable to open chip %d" % chip)
