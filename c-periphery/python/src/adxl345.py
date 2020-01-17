@@ -18,9 +18,11 @@ from libperiphery import libperipheryi2c
 class adxl345:
     
     def __init__(self, chip):
-        """Create library interface.
+        """Create library and ffi interfaces.
         """    
         self.i2c = libperipheryi2c.libperipheryi2c()
+        self.lib = self.i2c.lib
+        self.ffi = self.i2c.ffi        
         self.chip = gpiod.Chip(chip, gpiod.Chip.OPEN_BY_PATH)
             
     def getRange(self, handle, addr):
