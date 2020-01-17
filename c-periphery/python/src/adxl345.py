@@ -97,13 +97,13 @@ class adxl345:
         print ("libgpiod version %s" % gpiod.version_string())
         # Verify the chip was opened
         if self.chip != self.ffi.NULL:
-            print("Name: %s, label: %s, lines: %u" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
+            print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
             line = self.chip.get_line(line)
             # Verify we have line
             if line != self.ffi.NULL:
                 consumer = sys.argv[0][:-3]
                 # This will set line for output and set initial value (LED off)
-                if gpiod.line_request_output(line, consumer.encode('utf-8'), 1) == 0:
+                if line.request(consumer=sys.argv[0][:-5], type=gpiod.LINE_REQ_DIR_OUT) == 0:
                     handle = self.i2c.open(device)
                     # ADXL345 wired up on port 0x53?
                     if self.i2c.readReg(handle, address, 0x00) == 0xe5:
