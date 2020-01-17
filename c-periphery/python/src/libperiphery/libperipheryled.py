@@ -87,7 +87,7 @@ class libperipheryled:
         if self.lib.led_close(handle) < 0:
             raise RuntimeError(self.ffi.string(self.lib.led_errmsg(handle)).decode('utf-8'))
         else:
-            self.lib.i2c_free(handle)
+            self.lib.led_free(handle)
         
     def setBrightness(self, handle, value):
         """Write value to led brightness register.
