@@ -126,12 +126,12 @@ class adxl345:
                             # LED on
                             line.set_value(1)
                         count += 1
-                    else:
-                        print("Not ADXL345?")
-                    # LED on
-                    line.set_value(0)
-                    self.i2c.close(handle)
-                line.release(line)
+                else:
+                    print("Not ADXL345?")
+                # LED on
+                line.set_value(1)
+                self.i2c.close(handle)
+                line.release()
             else:
                 print("Unable to set line %d to output" % line)
             self.chip.close(self.chip)    
