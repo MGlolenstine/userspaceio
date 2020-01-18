@@ -134,7 +134,7 @@ class adxl345:
                 line.release()
             else:
                 print("Unable to set line %d to output" % line)
-            self.chip.close(self.chip)    
+            self.chip.close()    
         else:
             print("Unable to open chip %d" % chip)
                     
