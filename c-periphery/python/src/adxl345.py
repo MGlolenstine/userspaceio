@@ -128,12 +128,12 @@ class adxl345:
                         count += 1
                     else:
                         print("Not ADXL345?")
-                    # LED off
-                    gpiod.line_set_value(line, 1)
+                    # LED on
+                    line.set_value(0)
                     self.i2c.close(handle)
-                else:
-                    print("Unable to set line %d to output" % line)
-                gpiod.line_release(line)
+                line.release(line)
+            else:
+                print("Unable to set line %d to output" % line)
             self.chip.close(self.chip)    
         else:
             print("Unable to open chip %d" % chip)
