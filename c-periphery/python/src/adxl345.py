@@ -128,8 +128,8 @@ class adxl345:
                         count += 1
                 else:
                     print("Not ADXL345?")
-                # LED on
-                line.set_value(1)
+                # LED off
+                line.set_value(0)
                 self.i2c.close(handle)
                 line.release()
             else:
