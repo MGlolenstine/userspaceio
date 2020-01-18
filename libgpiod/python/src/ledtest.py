@@ -40,6 +40,7 @@ class ledtest:
             time.sleep(1)
             count += 1
         line.release()
+        self.chip.close(self.chip)
 
 
 if __name__ == "__main__":
