@@ -1,7 +1,7 @@
 ![Title](images/title.png)
 
 User Space IO is Python 3 and Java 8 bindings for Linux user space GPIO, SPI,
-I2C, PWM, MMIO and Serial interfaces. Using best of breed user space C libraries
+I2C, PWM, MMIO, LED and Serial interfaces. Using best of breed user space C libraries
 provides a cross platform solution to SBC development. Primarly User Space IO
 will be targeting [Armbian](https://www.armbian.com), but the scripts should
 work with most Ubuntu/Debian distributions. Demo applications are included that
@@ -66,24 +66,22 @@ could have gone wrong during the build/bindings generation processes.
 If you want to access devices without root do the following (you can try udev
 rules instead if you wish):
 * `sudo usermod -a -G dialout username` (Use a non-root username)
-* `sudo groupadd i2c`
-* `sudo usermod -a -G i2c username` (Use a non-root username)
-* `sudo groupadd spi`
-* `sudo usermod -a -G spi username` (Use a non-root username)
-* `sudo groupadd gpio`
-* `sudo usermod -a -G gpio username` (Use a non-root username)
+* `sudo groupadd usio`
+* `sudo usermod -a -G usio username` (Use a non-root username)
 * `sudo gpiodetect` (Note chip names to add below for libgpiod access)
 * `ls /dev/spidev*` (Note SPI channels below)
 * `ls /dev/i2c*` (Note i2c devices below)
 * `sudo nano /etc/rc.local`
-<pre><code>chown -R root:gpio /dev/gpiochip0
+<pre><code>chown -R root:usio /dev/gpiochip0
 chmod -R ug+rw /dev/gpiochip0
-chown -R root:gpio /dev/gpiochip1
+chown -R root:usio /dev/gpiochip1
 chmod -R ug+rw /dev/gpiochip1
-chown -R root:i2c /dev/i2c-0
+chown -R root:usio /dev/i2c-0
 chmod -R ug+rw /dev/i2c-0
-chown -R root:spi /dev/spidev1.0
-chmod -R ug+rw /dev/spidev1.0</code></pre>
+chown -R root:usio /dev/spidev1.0
+chmod -R ug+rw /dev/spidev1.0
+chown -R root:usio /sys/class/leds
+chmod -R ug+rw /sys/class/leds</code></pre>
 * `sudo nano /etc/udev/rules.d/99-com.rules`
 <pre><code>SUBSYSTEM=="pwm*", PROGRAM="/bin/sh -c '\
         chown -R root:gpio /sys/class/pwm && chmod -R 770 /sys/class/pwm;\
