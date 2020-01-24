@@ -43,7 +43,7 @@ fi
 jdkarchive=$(basename "$jdkurl")
 
 # JNA jar (4.5.1 causes UnsatisfiedLinkError)
-jnajar="repo1.maven.org/maven2/net/java/dev/jna/jna/5.5.0/jna-5.5.0.jar"
+jnajar="https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.5.0/jna-5.5.0.jar"
 
 log "Installing Java"
 
