@@ -17,7 +17,7 @@ import com.sun.jna.ptr.PointerByReference;
  * 
  * Run in another terminal:
  * 
- * sudo socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11
+ * sudo socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS1
  * 
  * Copyright (c) 2018 Steven P. Goldsmith
  * See LICENSE.md for details.
@@ -27,7 +27,7 @@ public class SerialTest {
 
 	public static void main(String args[]) {
 		final Serial serial = new Serial();
-		String device = "/dev/ttyS10";
+		String device = "/dev/ttyS1";
 		int baudRate = 115200;
 		// See if there are args to parse
 		if (args.length > 0) {
