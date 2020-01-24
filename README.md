@@ -66,7 +66,7 @@ could have gone wrong during the build/bindings generation processes.
 If you want to access devices without root do the following (you can try udev
 rules instead if you wish):
 * `sudo usermod -a -G dialout username` (Use a non-root username)
-* `sudo groupadd usio`
+* `sudo groupadd usio username`
 * `sudo usermod -a -G usio username` (Use a non-root username)
 * `sudo gpiodetect` (Note chip names to add below for libgpiod access)
 * `ls /dev/spidev*` (Note SPI channels below)
@@ -80,13 +80,8 @@ chown -R root:usio /dev/i2c-0
 chmod -R ug+rw /dev/i2c-0
 chown -R root:usio /dev/spidev1.0
 chmod -R ug+rw /dev/spidev1.0
-chown -R root:usio /sys/class/leds
-chmod -R ug+rw /sys/class/leds</code></pre>
-* `sudo nano /etc/udev/rules.d/99-com.rules`
-<pre><code>SUBSYSTEM=="pwm*", PROGRAM="/bin/sh -c '\
-        chown -R root:gpio /sys/class/pwm && chmod -R 770 /sys/class/pwm;\
-        chown -R root:gpio /sys/devices/platform/soc/*.pwm/pwm/pwmchip* && chmod -R 770 /sys/devices/platform/soc/*.pwm/pwm/pwmchip*\
-'"</code></pre>
+chown -R root:usio /sys/devices/platform/leds/leds
+chmod -R ug+rw /sys/devices/platform/leds/leds</code></pre>
 
 ## libgpiod
 [libgpiod](https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/tree/README)
