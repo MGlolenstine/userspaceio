@@ -127,7 +127,7 @@ To run demos:
 * `alias python=python3`
 * `export PYTHONPATH=/usr/local/lib/python3.6/site-packages`
 * `cd ~/userspaceio/libgpiod/python/src`
-* `python ledtest.py --chip 0 --line 203` to run LED test after wiring up to
+* `python ledtest.py --chip /dev/gpiochip0 --line 203` to run LED test after wiring up to
 line 203 (GPIOG11) on NanoPi Duo (the default). 
 
 #### Java bindings
