@@ -22,7 +22,7 @@ class ledtest:
     def main(self, line):
         """Turn LED on and off.
         """
-        numtests = 100000
+        numtests = 1000000
         print("Test write only")
         line = self.chip.get_line(line)
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
@@ -33,7 +33,7 @@ class ledtest:
             count += 1
         end = time.time()
         elapsed = end - start
-        print(elapsed)
+        print(numtests / elapsed)
         line.release()
         self.chip.close()
 
