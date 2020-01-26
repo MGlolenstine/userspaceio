@@ -35,6 +35,7 @@ class ledtest:
         elapsed = end - start
         print(numtests / elapsed)
         print("Test get")
+        line.release()
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_IN)
         count = 0
         start = time.time()
