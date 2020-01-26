@@ -23,7 +23,7 @@ class ledtest:
         """Turn LED on and off.
         """
         numtests = 1000000
-        print("Test write only")
+        print("Test set")
         line = self.chip.get_line(line)
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
         count = 0
@@ -34,6 +34,7 @@ class ledtest:
         end = time.time()
         elapsed = end - start
         print(numtests / elapsed)
+        print("Test get")
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_IN)
         count = 0
         start = time.time()
