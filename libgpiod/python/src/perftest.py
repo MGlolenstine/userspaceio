@@ -34,6 +34,15 @@ class ledtest:
         end = time.time()
         elapsed = end - start
         print(numtests / elapsed)
+        line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_IN)
+        count = 0
+        start = time.time()
+        while count < numtests:
+            line.get_value()         
+            count += 1
+        end = time.time()
+        elapsed = end - start
+        print(numtests / elapsed)
         line.release()
         self.chip.close()
 
