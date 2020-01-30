@@ -12,7 +12,7 @@ import sys, time, gpiod
 from argparse import *
 
 
-class ledtest:
+class perftest:
     
     def __init__(self, chip):
         """Initialize GPIO chip.
