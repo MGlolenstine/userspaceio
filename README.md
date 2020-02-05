@@ -10,7 +10,7 @@ illustrate how to leverage the bindings.
 The idea is to have consistent APIs across C, Python and JVM languages without
 having to use hacked up RPi.GPIO or Wiring Pi implementations for each distinct
 SBC model. The possibility of using other JVM based languages such as Groovy,
-Kotlin, Scala, etc. opens up language opprtunties that do not currently exist
+Kotlin, Scala, etc. opens up language opportunities that do not currently exist
 in the IoT space.
 
 ### SBC configuration
@@ -156,7 +156,7 @@ To run demos:
 to run Triple Axis Accelerometer & Gyro MPU-6050 sensor example. 
 
 ## pwmio
-I wasn't able to find a good C library that handled hardware PWM, so I worte one
+I wasn't able to find a good C library that handled hardware PWM, so I wrote one
 based on /sys/class/pwm. Your SBC must support hardware PWM and be exposed to
 the kernel via /sys/class/pwm.
 
